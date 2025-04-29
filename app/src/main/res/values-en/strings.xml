@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Habit and schedule assistant</string>
+    <string name="login_headline">login</string>
+
 </resources>

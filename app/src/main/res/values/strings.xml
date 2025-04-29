@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">习惯与日程助手</string>
-    <string name="login_HeadLine">登录界面</string>
+    <string name="login_headline">登录界面</string>
 
 
 </resources>

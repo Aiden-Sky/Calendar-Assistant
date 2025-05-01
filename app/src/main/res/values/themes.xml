@@ -3,8 +3,7 @@
     <style name="Base.Theme.Desine" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <color name="primary">#3C91E9</color>
-        <color name="white">#FFFFFF</color>
+
     </style>
 
     <style name="Theme.Desine" parent="Base.Theme.Desine" />

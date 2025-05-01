@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Desine"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.Login_activity"
             android:exported="true"
             android:theme="@style/Theme.Desine">
             <intent-filter>
@@ -21,6 +21,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.Home_activity"
+            android:exported="true"
+            android:theme="@style/Theme.Desine">
+
         </activity>
     </application>
 

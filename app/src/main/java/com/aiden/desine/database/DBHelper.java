@@ -19,9 +19,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE users (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "username TEXT NOT NULL UNIQUE, " +
-                "password TEXT NOT NULL, " +
+                "password_hash TEXT NOT NULL, " +
+                "salt TEXT NOT NULL, " +
+                "phone TEXT NOT NULL UNIQUE, " +
+                "email TEXT NOT NULL, " +
                 "remember_password INTEGER DEFAULT 0, " +
                 "auto_login INTEGER DEFAULT 0)");
+
 
         // 创建日程表
         db.execSQL("CREATE TABLE schedules (" +

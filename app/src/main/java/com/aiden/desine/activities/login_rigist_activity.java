@@ -1,12 +1,14 @@
 package com.aiden.desine.activities;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.aiden.desine.R;
+import com.aiden.desine.dao.User_dao;
+import com.aiden.desine.model.User_model;
 
 public class login_rigist_activity extends AppCompatActivity {
     private TextInputEditText usernameInput;
@@ -15,13 +17,15 @@ public class login_rigist_activity extends AppCompatActivity {
     private TextInputEditText phoneInput;
     private TextInputEditText emailInput;
     private MaterialButton registerButton;
-    private MaterialButton exitButton; // 新增退出按钮
+    private MaterialButton exitButton;
+    private User_dao userDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_subpage_regist);
 
+        userDao = new User_dao(this);
         initViews();
         setupListeners();
     }
@@ -33,12 +37,12 @@ public class login_rigist_activity extends AppCompatActivity {
         phoneInput = findViewById(R.id.phone);
         emailInput = findViewById(R.id.email);
         registerButton = findViewById(R.id.register_button);
-        exitButton = findViewById(R.id.exit_button); // 初始化退出按钮
+        exitButton = findViewById(R.id.exit_button);
     }
 
     private void setupListeners() {
         registerButton.setOnClickListener(v -> onRegisterClick());
-        exitButton.setOnClickListener(v -> finish()); // 点击退出按钮，返回上一个页面
+        exitButton.setOnClickListener(v -> finish());
     }
 
     private void onRegisterClick() {
@@ -49,19 +53,15 @@ public class login_rigist_activity extends AppCompatActivity {
         String email = emailInput.getText().toString();
 
         if (validateInput(username, password, confirmPassword, phone, email)) {
-            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-            if (sharedPreferences.contains(username)) {
-                showToast("用户名已存在");
-                return;
+            User_model user = new User_model(username, password, phone, email);
+            if (userDao.registerUser(user)) {
+                Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, Login_activity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, "注册失败，用户名或电话已存在", Toast.LENGTH_SHORT).show();
             }
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(username, password);
-            editor.putString(username + "_phone", phone);
-            editor.putString(username + "_email", email);
-            editor.apply();
-
-            Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
-            finish(); // 注册成功后返回登录页面
         }
     }
 

@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.aiden.desine.R;
+import com.aiden.desine.dao.User_dao;
 import com.aiden.desine.databinding.ActivityLoginBinding;
 
 public class Login_activity extends AppCompatActivity {
@@ -21,6 +23,7 @@ public class Login_activity extends AppCompatActivity {
     private MaterialButton loginButton;
     private View forgotPasswordLink;
     private View registerLink;
+    private User_dao userDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class Login_activity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        userDao = new User_dao(this);
         initViews();
         initSharedPreferences();
         checkAutoLogin();
@@ -52,43 +56,45 @@ public class Login_activity extends AppCompatActivity {
     private void checkAutoLogin() {
         if (sharedPreferences.getBoolean("auto_login", false)) {
             String savedUsername = sharedPreferences.getString("username", "");
-            String savedPassword = sharedPreferences.getString("password", "");
-            if (!savedUsername.isEmpty() && !savedPassword.isEmpty()) {
-                performLogin(savedUsername, savedPassword);
+            if (!savedUsername.isEmpty() && userDao.getUser(savedUsername) != null) {
+                Toast.makeText(this, "自动登录成功", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, Home_activity.class));
+                finish();
             }
         }
     }
 
     private void restoreLoginInfo() {
         if (sharedPreferences.getBoolean("remember_password", false)) {
-            usernameInput.setText(sharedPreferences.getString("username", ""));
-            passwordInput.setText(sharedPreferences.getString("password", ""));
+            String savedUsername = sharedPreferences.getString("username", "");
+            String savedPassword = sharedPreferences.getString("password", "");
+            usernameInput.setText(savedUsername);
+            passwordInput.setText(savedPassword); // 自动填充密码
             rememberPasswordCheckbox.setChecked(true);
         }
     }
+
 
     private void setupListeners() {
         loginButton.setOnClickListener(v -> onLoginClick());
 
         registerLink.setOnClickListener(v -> {
-
-            startActivity(new Intent(Login_activity.this,login_rigist_activity.class));
+            startActivity(new Intent(Login_activity.this, login_rigist_activity.class));
         });
 
         forgotPasswordLink.setOnClickListener(v -> {
-
             startActivity(new Intent(Login_activity.this, login_forget_activity.class));
         });
 
         rememberPasswordCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!isChecked) {
-                autoLoginCheckbox.setChecked(false);
+                autoLoginCheckbox.setChecked(false); // 如果取消记住密码，自动登录也取消
             }
         });
 
         autoLoginCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                rememberPasswordCheckbox.setChecked(true);
+                rememberPasswordCheckbox.setChecked(true); // 自动登录必须记住密码
             }
         });
     }
@@ -98,8 +104,29 @@ public class Login_activity extends AppCompatActivity {
         String password = passwordInput.getText().toString();
 
         if (validateInput(username, password)) {
-            performLogin(username, password);
+            if (userDao.loginUser(username, password)) {
+                saveLoginState(username, password); // 保存用户名和密码
+                Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, Home_activity.class));
+                finish();
+            } else {
+                showToast("用户名或密码错误");
+            }
         }
+    }
+
+
+    private void saveLoginState(String username, String password) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (rememberPasswordCheckbox.isChecked()) {
+            editor.putString("username", username);
+            editor.putString("password", password); // 保存密码
+        } else {
+            editor.remove("username");
+            editor.remove("password"); // 未勾选时清除数据
+        }
+        editor.putBoolean("remember_password", rememberPasswordCheckbox.isChecked());
+        editor.apply();
     }
 
     private boolean validateInput(String username, String password) {
@@ -114,30 +141,8 @@ public class Login_activity extends AppCompatActivity {
         return true;
     }
 
-    private void performLogin(String username, String password) {
-        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String storedPassword = sharedPreferences.getString(username, null);
-
-        if (storedPassword == null) {
-            showToast("用户名不存在");
-        } else if (storedPassword.equals(password)) {
-            saveLoginState(username, password);
-            startActivity(new Intent(this, Home_activity.class));
-            finish();
-        } else {
-            showToast("密码错误");
-        }
-    }
 
 
-    private void saveLoginState(String username, String password) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username", username);
-        editor.putString("password", password);
-        editor.putBoolean("remember_password", rememberPasswordCheckbox.isChecked());
-        editor.putBoolean("auto_login", autoLoginCheckbox.isChecked());
-        editor.apply();
-    }
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -148,5 +153,4 @@ public class Login_activity extends AppCompatActivity {
         super.onDestroy();
         binding = null;
     }
-
 }

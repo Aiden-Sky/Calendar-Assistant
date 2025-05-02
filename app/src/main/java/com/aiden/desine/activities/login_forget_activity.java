@@ -1,6 +1,5 @@
 package com.aiden.desine.activities;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -8,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.aiden.desine.R;
+import com.aiden.desine.dao.User_dao; // 假设的 UserDao 类
 
 public class login_forget_activity extends AppCompatActivity {
     private TextInputEditText usernameInput;
@@ -16,14 +16,16 @@ public class login_forget_activity extends AppCompatActivity {
     private TextInputEditText newPasswordInput;
     private TextInputEditText confirmNewPasswordInput;
     private MaterialButton submitNewPasswordButton;
-    private MaterialButton exitButton; // 新增退出按钮
+    private MaterialButton exitButton;
     private String username;
+    private User_dao userDao; // 用于数据库操作
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_subpage_forget);
 
+        userDao = new User_dao(this); // 初始化 UserDao
         initViews();
         setupListeners();
     }
@@ -35,13 +37,13 @@ public class login_forget_activity extends AppCompatActivity {
         newPasswordInput = findViewById(R.id.new_password);
         confirmNewPasswordInput = findViewById(R.id.confirm_new_password);
         submitNewPasswordButton = findViewById(R.id.submit_new_password_button);
-        exitButton = findViewById(R.id.exit_button); // 初始化退出按钮
+        exitButton = findViewById(R.id.exit_button);
     }
 
     private void setupListeners() {
         submitUserPhoneButton.setOnClickListener(v -> onSubmitUserPhoneClick());
         submitNewPasswordButton.setOnClickListener(v -> onSubmitNewPasswordClick());
-        exitButton.setOnClickListener(v -> finish()); // 点击退出，返回 Login_activity
+        exitButton.setOnClickListener(v -> finish());
     }
 
     private void onSubmitUserPhoneClick() {
@@ -49,7 +51,7 @@ public class login_forget_activity extends AppCompatActivity {
         String phone = phoneInput.getText().toString();
 
         if (validateUserPhone(username, phone)) {
-            if (checkUsernameAndPhone(username, phone)) {
+            if (userDao.checkUsernameAndPhone(username, phone)) {
                 this.username = username;
                 findViewById(R.id.new_password_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.confirm_new_password_layout).setVisibility(View.VISIBLE);
@@ -68,9 +70,12 @@ public class login_forget_activity extends AppCompatActivity {
         String confirmNewPassword = confirmNewPasswordInput.getText().toString();
 
         if (validatePassword(newPassword, confirmNewPassword)) {
-            updatePassword(username, newPassword);
-            Toast.makeText(this, "密码已成功重置", Toast.LENGTH_SHORT).show();
-            finish(); // 返回登录界面
+            if (userDao.updatePassword(username, newPassword)) {
+                Toast.makeText(this, "密码已成功重置", Toast.LENGTH_SHORT).show();
+                finish(); // 返回登录界面
+            } else {
+                showToast("密码重置失败，请重试");
+            }
         }
     }
 
@@ -86,12 +91,6 @@ public class login_forget_activity extends AppCompatActivity {
         return true;
     }
 
-    private boolean checkUsernameAndPhone(String username, String phone) {
-        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String storedPhone = sharedPreferences.getString(username + "_phone", null);
-        return storedPhone != null && storedPhone.equals(phone);
-    }
-
     private boolean validatePassword(String newPassword, String confirmNewPassword) {
         if (newPassword.isEmpty()) {
             showToast("请输入新密码");
@@ -102,13 +101,6 @@ public class login_forget_activity extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-
-    private void updatePassword(String username, String newPassword) {
-        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(username, newPassword);
-        editor.apply();
     }
 
     private void showToast(String message) {

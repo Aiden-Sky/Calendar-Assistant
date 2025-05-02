@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- 外框：日历边框 -->
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M8,10h32a2,2 0 0 1 2,2v24a2,2 0 0 1 -2,2H8a2,2 0 0 1 -2,-2V12a2,2 0 0 1 2,-2z" />
+
+    <!-- 顶部栏：表示日历头部 -->
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M 8 10 H 40 V 16 H 8 Z" />
+
+    <!-- 日期标记 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16,22h4v4h-4zM24,22h4v4h-4zM32,22h4v4h-4z
+                          M16,30h4v4h-4zM24,30h4v4h-4zM32,30h4v4h-4z" />
+
+    <!-- 左右的日历环 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16,8v4M32,8v4"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round" />
+</vector>

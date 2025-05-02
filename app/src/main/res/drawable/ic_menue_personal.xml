@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- 头部（圆形头像） -->
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M24,12a6,6 0 1,1 0,12a6,6 0 0,1 0,-12z" />
+
+    <!-- 身体（椭圆轮廓） -->
+    <path
+        android:fillColor="#42A5F5"
+        android:pathData="M12,36c0,-6.6 8,-10 12,-10s12,3.4 12,10v2H12v-2z" />
+
+</vector>

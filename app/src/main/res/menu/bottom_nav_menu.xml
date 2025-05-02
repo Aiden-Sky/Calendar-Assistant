@@ -7,17 +7,17 @@
     <item
         android:id="@+id/nav_schedule"
         android:title="日程管理"
-        android:icon="@drawable/icons"/>
+        android:icon="@drawable/ic_menu_calende"/>
     <item
         android:id="@+id/nav_habit"
         android:title="番茄时钟"
-        android:icon="@drawable/icons"/>
+        android:icon="@drawable/ic_menu_tomato"/>
     <item
         android:id="@+id/nav_profile"
         android:title="数据统计"
-        android:icon="@drawable/icons"/>
+        android:icon="@drawable/ic_menu_statistics"/>
     <item
         android:id="@+id/nav_setting"
         android:title="个人中心"
-        android:icon="@drawable/icons"/>
+        android:icon="@drawable/ic_menue_personal"/>
 </menu>

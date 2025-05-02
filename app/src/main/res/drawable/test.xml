@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- 背景边框 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#90A4AE"
+        android:strokeWidth="1"
+        android:pathData="M4,8h40a2,2 0 0 1 2,2v32a2,2 0 0 1 -2,2H4a2,2 0 0 1 -2,-2V10a2,2 0 0 1 2,-2z" />
+
+    <!-- 横坐标轴 -->
+    <path
+        android:strokeColor="#B0BEC5"
+        android:strokeWidth="2"
+        android:pathData="M6,38h36" />
+
+    <!-- 柱状图1（左） -->
+    <path
+        android:fillColor="#42A5F5"
+        android:pathData="M10,24h6v14h-6z" />
+
+    <!-- 柱状图2（中） -->
+    <path
+        android:fillColor="#66BB6A"
+        android:pathData="M20,18h6v20h-6z" />
+
+    <!-- 柱状图3（右） -->
+    <path
+        android:fillColor="#FFA726"
+        android:pathData="M30,12h6v26h-6z" />
+</vector>
+

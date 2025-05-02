@@ -4,4 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#EE7870</color>
     <color name="login_button_background">#03A9F4</color>
+
+<!--    番茄时钟-->
+    <color name="timer_background">#F5F5F5</color>
+    <color name="timer_text">#333333</color>
+    <color name="button_start">#4CAF50</color>
+    <color name="button_pause">#FFA000</color>
+    <color name="button_stop">#F44336</color>
+
 </resources>

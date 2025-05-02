@@ -18,7 +18,6 @@
             android:theme="@style/Theme.Desine">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,8 +26,10 @@
             android:name=".activities.Home_activity"
             android:exported="true"
             android:theme="@style/Theme.Desine">
-
         </activity>
-    </application>
 
+        <!-- 添加以下两行以注册缺失的 Activity -->
+        <activity android:name=".activities.login_rigist_activity" />
+        <activity android:name=".activities.login_forget_activity" />
+    </application>
 </manifest>

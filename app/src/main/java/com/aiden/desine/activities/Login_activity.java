@@ -71,13 +71,13 @@ public class Login_activity extends AppCompatActivity {
         loginButton.setOnClickListener(v -> onLoginClick());
 
         registerLink.setOnClickListener(v -> {
-            // TODO: 跳转到注册页面
-            // startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+
+            startActivity(new Intent(Login_activity.this,login_rigist_activity.class));
         });
 
         forgotPasswordLink.setOnClickListener(v -> {
-            // TODO: 跳转到忘记密码页面
-            // startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+
+            startActivity(new Intent(Login_activity.this, login_forget_activity.class));
         });
 
         rememberPasswordCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -115,15 +115,20 @@ public class Login_activity extends AppCompatActivity {
     }
 
     private void performLogin(String username, String password) {
-        // TODO: 实现实际的登录逻辑，这里只是示例
-        if ("admin".equals(username) && "123456".equals(password)) {
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String storedPassword = sharedPreferences.getString(username, null);
+
+        if (storedPassword == null) {
+            showToast("用户名不存在");
+        } else if (storedPassword.equals(password)) {
             saveLoginState(username, password);
             startActivity(new Intent(this, Home_activity.class));
             finish();
         } else {
-            showToast("用户名或密码错误");
+            showToast("密码错误");
         }
     }
+
 
     private void saveLoginState(String username, String password) {
         SharedPreferences.Editor editor = sharedPreferences.edit();

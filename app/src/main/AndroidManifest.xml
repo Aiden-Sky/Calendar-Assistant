@@ -4,6 +4,9 @@
     <!-- 添加存储权限，支持头像上传 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        tools:ignore="ManifestOrder" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +19,9 @@
         android:theme="@style/Theme.Design"
         tools:targetApi="31">
         <activity
+            android:name=".activities.add_habit_activity"
+            android:exported="false" />
+        <activity
             android:name=".activities.Edit_profile_activity"
             android:exported="false" />
         <activity
@@ -24,10 +30,10 @@
             android:theme="@style/Theme.Design">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.Home_activity"
             android:exported="true"
@@ -35,10 +41,6 @@
         <activity android:name=".activities.login_rigist_activity" />
         <activity android:name=".activities.login_forget_activity" />
 
-
     </application>
-
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"
-        tools:ignore="ManifestOrder" />
 
 </manifest>

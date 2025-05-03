@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "GrowthApp.db";
-    public static final int DATABASE_VERSION = 3; // 增加版本号以触发升级
+    public static final int DATABASE_VERSION = 5; // 增加版本号以触发升级
     private static final String TAG = "DBHelper";
 
     public DBHelper(Context context) {
@@ -16,7 +16,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // 创建用户表
+        // 创建 habits 表（包含所有字段）
+        db.execSQL("CREATE TABLE habits (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT, " +
+                "unit TEXT, " +
+                "goal_value INTEGER, " +
+                "frequency TEXT, " +
+                "reminder_time TEXT, " +
+                "notes TEXT, " +
+                "streak INTEGER DEFAULT 0, " +
+                "completion_rate REAL DEFAULT 0.0, " +
+                "completed_today INTEGER DEFAULT 0)");
+        Log.d(TAG, "创建 habits 表成功");
+
+        // 其他表保持不变
         db.execSQL("CREATE TABLE users (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "username TEXT NOT NULL UNIQUE, " +
@@ -47,16 +61,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(user_id) REFERENCES users(id))");
         Log.d(TAG, "创建 schedules 表成功，包含扩展字段");
 
-        // 创建习惯表
-        db.execSQL("CREATE TABLE habits (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "user_id INTEGER, " +
-                "name TEXT, " +
-                "checked_dates TEXT, " + // 用JSON字符串存储已打卡日期
-                "FOREIGN KEY(user_id) REFERENCES users(id))");
-        Log.d(TAG, "创建 habits 表成功");
-
-        // 创建备忘录表（可选）
         db.execSQL("CREATE TABLE memos (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id INTEGER, " +
@@ -69,7 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, "数据库升级：从版本 " + oldVersion + " 到版本 " + newVersion);
-        
+
         if (oldVersion < 2) {
             // 检查并添加 profile_picture_path 列
             try {
@@ -79,7 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.e(TAG, "升级失败：添加 profile_picture_path 列时出错: " + e.getMessage(), e);
             }
         }
-        
+
         if (oldVersion < 3) {
             // 更新schedules表结构，添加新字段
             try {
@@ -99,24 +103,24 @@ public class DBHelper extends SQLiteOpenHelper {
                         "is_completed INTEGER DEFAULT 0, " +
                         "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                         "FOREIGN KEY(user_id) REFERENCES users(id))");
-                
+
                 // 复制旧数据到新表
                 db.execSQL("INSERT INTO schedules_temp (id, user_id, title, description, date) " +
                         "SELECT id, user_id, title, content, date FROM schedules");
-                
+
                 // 删除旧表
                 db.execSQL("DROP TABLE schedules");
-                
+
                 // 重命名新表
                 db.execSQL("ALTER TABLE schedules_temp RENAME TO schedules");
-                
+
                 Log.d(TAG, "升级成功：更新 schedules 表结构");
             } catch (Exception e) {
                 Log.e(TAG, "升级失败：更新 schedules 表结构时出错: " + e.getMessage(), e);
             }
         }
     }
-    
+
     // 添加一个新日程
     public static final String TABLE_SCHEDULES = "schedules";
     public static final String COL_ID = "id";

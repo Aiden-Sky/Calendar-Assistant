@@ -49,7 +49,6 @@
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#4CAF50"
                 app:hintTextColor="#4CAF50"
-
                 app:startIconTint="#4CAF50">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -71,7 +70,6 @@
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#4CAF50"
                 app:hintTextColor="#4CAF50"
-
                 app:startIconTint="#4CAF50">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -93,7 +91,6 @@
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#4CAF50"
                 app:hintTextColor="#4CAF50"
-
                 app:startIconTint="#4CAF50">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -109,21 +106,20 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/habit_frequency_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#4CAF50"
                 app:hintTextColor="#4CAF50"
-
                 app:startIconTint="#4CAF50">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/habit_frequency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="频率"
-                    android:inputType="none"
+                    android:hint="频率 (如：每天、每周三次)"
+                    android:inputType="text"
                     android:padding="16dp"
                     android:textColor="#212121"
                     android:textSize="16sp" />
@@ -137,18 +133,14 @@
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#4CAF50"
                 app:hintTextColor="#4CAF50"
-
-                app:startIconTint="#4CAF50"
-
-                app:endIconMode="custom"
-                app:endIconTint="#4CAF50">
+                app:startIconTint="#4CAF50">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/habit_reminder_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="提醒时间"
-                    android:focusable="false"
+                    android:hint="提醒时间 (如：早上8点、晚上9:30)"
+                    android:inputType="text"
                     android:padding="16dp"
                     android:textColor="#212121"
                     android:textSize="16sp" />
@@ -162,7 +154,6 @@
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#4CAF50"
                 app:hintTextColor="#4CAF50"
-
                 app:startIconTint="#4CAF50">
 
                 <com.google.android.material.textfield.TextInputEditText

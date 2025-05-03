@@ -3,11 +3,12 @@ package com.aiden.desine.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
-
     public static final String DATABASE_NAME = "GrowthApp.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2; // 增加版本号以触发升级
+    private static final String TAG = "DBHelper";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,9 +24,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 "salt TEXT NOT NULL, " +
                 "phone TEXT NOT NULL UNIQUE, " +
                 "email TEXT NOT NULL, " +
+                "profile_picture_path TEXT, " +
                 "remember_password INTEGER DEFAULT 0, " +
                 "auto_login INTEGER DEFAULT 0)");
-
+        Log.d(TAG, "创建 users 表成功，包含 profile_picture_path 列");
 
         // 创建日程表
         db.execSQL("CREATE TABLE schedules (" +
@@ -35,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "content TEXT, " +
                 "date TEXT, " +
                 "FOREIGN KEY(user_id) REFERENCES users(id))");
+        Log.d(TAG, "创建 schedules 表成功");
 
         // 创建习惯表
         db.execSQL("CREATE TABLE habits (" +
@@ -43,6 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "name TEXT, " +
                 "checked_dates TEXT, " + // 用JSON字符串存储已打卡日期
                 "FOREIGN KEY(user_id) REFERENCES users(id))");
+        Log.d(TAG, "创建 habits 表成功");
 
         // 创建备忘录表（可选）
         db.execSQL("CREATE TABLE memos (" +
@@ -51,16 +55,21 @@ public class DBHelper extends SQLiteOpenHelper {
                 "content TEXT, " +
                 "created_at TEXT, " +
                 "FOREIGN KEY(user_id) REFERENCES users(id))");
+        Log.d(TAG, "创建 memos 表成功");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // 如果数据库升级，先删除旧表再重建
-        db.execSQL("DROP TABLE IF EXISTS users");
-        db.execSQL("DROP TABLE IF EXISTS schedules");
-        db.execSQL("DROP TABLE IF EXISTS habits");
-        db.execSQL("DROP TABLE IF EXISTS memos");
-        onCreate(db);
+        Log.d(TAG, "数据库升级：从版本 " + oldVersion + " 到版本 " + newVersion);
+        if (oldVersion < 2) {
+            // 检查并添加 profile_picture_path 列
+            try {
+                db.execSQL("ALTER TABLE users ADD COLUMN profile_picture_path TEXT");
+                Log.d(TAG, "升级成功：为 users 表添加 profile_picture_path 列");
+            } catch (Exception e) {
+                Log.e(TAG, "升级失败：添加 profile_picture_path 列时出错: " + e.getMessage(), e);
+            }
+        }
+        // 可根据需要添加更多版本升级逻辑
     }
-
 }

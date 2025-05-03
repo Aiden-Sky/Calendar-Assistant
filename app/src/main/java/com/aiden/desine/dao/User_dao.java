@@ -2,8 +2,10 @@ package com.aiden.desine.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import com.aiden.desine.database.DBHelper;
 import com.aiden.desine.model.User_model;
 import java.nio.charset.StandardCharsets;
@@ -13,10 +15,39 @@ import java.util.UUID;
 import android.util.Base64;
 
 public class User_dao {
+    private static final String TAG = "User_dao";  // 统一日志标签
     private DBHelper dbHelper;
+    private Context context;
+
+    // SharedPreferences 相关常量（与 PersonalFragment 保持一致）
+    private static final String PREF_NAME = "user_prefs";
+    private static final String KEY_USERNAME = "username";
 
     public User_dao(Context context) {
+        this.context = context;
         dbHelper = new DBHelper(context);
+    }
+
+    // 获取当前登录用户的用户名
+    public String getCurrentUsername() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(KEY_USERNAME, null);
+        if (username == null) {
+            Log.e(TAG, "未找到登录用户名");
+        } else {
+            Log.d(TAG, "获取到的用户名: " + username);
+        }
+        return username;
+    }
+
+    // 获取当前登录用户的信息
+    public User_model getCurrentUser() {
+        String username = getCurrentUsername();
+        if (username == null) {
+            Log.e(TAG, "无法获取当前用户，用户名为空");
+            return null;
+        }
+        return getUser(username);
     }
 
     // 注册用户
@@ -32,14 +63,20 @@ public class User_dao {
             values.put("salt", salt);
             values.put("phone", user.getPhone());
             values.put("email", user.getEmail());
+            values.put("profile_picture_path", user.getProfilePicturePath());
             values.put("remember_password", 0);
             values.put("auto_login", 0);
 
             long result = db.insert("users", null, values);
-            return result != -1;
+            if (result == -1) {
+                Log.e(TAG, "注册用户失败: " + user.getUsername());
+                return false;
+            }
+            Log.d(TAG, "注册用户成功: " + user.getUsername());
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false; // 用户名或电话重复时会返回 false
+            Log.e(TAG, "注册用户异常: " + e.getMessage(), e);
+            return false;
         } finally {
             db.close();
         }
@@ -56,11 +93,19 @@ public class User_dao {
                 String storedPasswordHash = cursor.getString(cursor.getColumnIndexOrThrow("password_hash"));
                 String salt = cursor.getString(cursor.getColumnIndexOrThrow("salt"));
                 String inputPasswordHash = hashPassword(password, salt);
-                return storedPasswordHash.equals(inputPasswordHash);
+                boolean success = storedPasswordHash.equals(inputPasswordHash);
+                if (success) {
+                    Log.d(TAG, "登录成功: " + username);
+                } else {
+                    Log.w(TAG, "登录失败: 密码错误");
+                }
+                return success;
+            } else {
+                Log.w(TAG, "登录失败: 用户名不存在 - " + username);
+                return false;
             }
-            return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "登录异常: " + e.getMessage(), e);
             return false;
         } finally {
             if (cursor != null) cursor.close();
@@ -68,23 +113,111 @@ public class User_dao {
         }
     }
 
-    // 获取用户信息
+    // 更新用户信息
+    public boolean updateUser(String oldUsername, User_model updatedUser) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = null;
+        try {
+            String newUsername = updatedUser.getUsername();
+            String newPhone = updatedUser.getPhone();
+            String newEmail = updatedUser.getEmail();
+            String newPassword = updatedUser.getPassword(); // 如果不为空，则更新密码
+
+            // 检查新用户名是否已存在（如果用户名改变）
+            if (!oldUsername.equals(newUsername)) {
+                cursor = db.query("users", new String[]{"username"}, "username = ?",
+                        new String[]{newUsername}, null, null, null);
+                if (cursor.moveToFirst()) {
+                    Log.w(TAG, "新用户名已存在: " + newUsername);
+                    return false; // 新用户名已存在
+                }
+                cursor.close();
+                cursor = null;
+            }
+
+            // 获取当前用户的电话进行比较
+            String currentPhone = null;
+            cursor = db.query("users", new String[]{"phone"}, "username = ?",
+                    new String[]{oldUsername}, null, null, null);
+            if (cursor.moveToFirst()) {
+                currentPhone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
+            } else {
+                Log.w(TAG, "未找到用户: " + oldUsername);
+                return false;
+            }
+            cursor.close();
+            cursor = null;
+
+            // 检查新电话是否已存在（如果电话改变）
+            if (!newPhone.equals(currentPhone)) {
+                cursor = db.query("users", new String[]{"phone"}, "phone = ?",
+                        new String[]{newPhone}, null, null, null);
+                if (cursor.moveToFirst()) {
+                    Log.w(TAG, "新电话已存在: " + newPhone);
+                    return false; // 新电话已存在
+                }
+                cursor.close();
+                cursor = null;
+            }
+
+            // 准备更新的值
+            ContentValues values = new ContentValues();
+            values.put("username", newUsername);
+            values.put("phone", newPhone);
+            values.put("email", newEmail);
+
+            // 如果提供了新密码，更新密码
+            if (newPassword != null && !newPassword.isEmpty()) {
+                String newSalt = generateSalt();
+                String newPasswordHash = hashPassword(newPassword, newSalt);
+                values.put("password_hash", newPasswordHash);
+                values.put("salt", newSalt);
+                Log.d(TAG, "将更新密码");
+            }
+
+            // 执行更新
+            int rowsAffected = db.update("users", values, "username = ?", new String[]{oldUsername});
+            if (rowsAffected > 0) {
+                Log.d(TAG, "更新用户信息成功: oldUsername=" + oldUsername + ", newUsername=" + newUsername);
+                // 如果用户名改变，更新 SharedPreferences
+                if (!oldUsername.equals(newUsername)) {
+                    updateCurrentUsername(newUsername);
+                }
+                return true;
+            } else {
+                Log.w(TAG, "更新用户信息失败: 未找到用户 " + oldUsername);
+                return false;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "更新用户信息异常: " + e.getMessage(), e);
+            return false;
+        } finally {
+            if (cursor != null) cursor.close();
+            db.close();
+        }
+    }
+
+    // 获取用户信息（指定用户名）
     public User_model getUser(String username) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
             cursor = db.query("users", null, "username = ?", new String[]{username}, null, null, null);
-            if (cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst()) {
                 User_model user = new User_model();
                 user.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
                 user.setUsername(cursor.getString(cursor.getColumnIndexOrThrow("username")));
                 user.setPhone(cursor.getString(cursor.getColumnIndexOrThrow("phone")));
                 user.setEmail(cursor.getString(cursor.getColumnIndexOrThrow("email")));
+                user.setProfilePicturePath(cursor.getString(cursor.getColumnIndexOrThrow("profile_picture_path")));
+                Log.d(TAG, "获取用户成功: " + username);
                 return user;
+            } else {
+                Log.w(TAG, "未找到用户: " + username);
+                return null;
             }
-            return null;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "获取用户异常: " + e.getMessage(), e);
             return null;
         } finally {
             if (cursor != null) cursor.close();
@@ -101,11 +234,19 @@ public class User_dao {
                     new String[]{username}, null, null, null);
             if (cursor.moveToFirst()) {
                 String storedPhone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
-                return storedPhone.equals(phone);
+                boolean match = storedPhone.equals(phone);
+                if (match) {
+                    Log.d(TAG, "用户名和电话匹配: " + username);
+                } else {
+                    Log.w(TAG, "电话不匹配: " + username);
+                }
+                return match;
+            } else {
+                Log.w(TAG, "未找到用户: " + username);
+                return false;
             }
-            return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "验证用户名和电话异常: " + e.getMessage(), e);
             return false;
         } finally {
             if (cursor != null) cursor.close();
@@ -125,13 +266,92 @@ public class User_dao {
             values.put("salt", newSalt);
 
             int rowsAffected = db.update("users", values, "username = ?", new String[]{username});
-            return rowsAffected > 0;
+            if (rowsAffected > 0) {
+                Log.d(TAG, "更新密码成功: " + username);
+                return true;
+            } else {
+                Log.w(TAG, "更新密码失败: 未找到用户 " + username);
+                return false;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "更新密码异常: " + e.getMessage(), e);
             return false;
         } finally {
             db.close();
         }
+    }
+
+    // 更新用户头像路径
+    public boolean updateProfilePicturePath(String username, String path) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put("profile_picture_path", path);
+            int rowsAffected = db.update("users", values, "username = ?", new String[]{username});
+            if (rowsAffected > 0) {
+                Log.d(TAG, "更新头像路径成功: username=" + username + ", path=" + path);
+                return true;
+            } else {
+                Log.w(TAG, "更新头像路径失败: 未找到用户 " + username);
+                return false;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "更新头像路径异常: " + e.getMessage(), e);
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+
+    // 更新用户信息（用户名和邮箱）
+    public boolean updateUserInfo(String oldUsername, String newUsername, String newEmail) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        try {
+            // 如果新用户名与旧用户名不同，检查新用户名是否已被占用
+            if (!oldUsername.equals(newUsername)) {
+                Cursor cursor = db.query("users", new String[]{"username"}, "username = ?",
+                        new String[]{newUsername}, null, null, null);
+                if (cursor.moveToFirst()) {
+                    Log.w(TAG, "新用户名已存在: " + newUsername);
+                    cursor.close();
+                    return false; // 新用户名已存在，更新失败
+                }
+                cursor.close();
+            }
+
+            // 更新数据库中的用户名和邮箱
+            ContentValues values = new ContentValues();
+            values.put("username", newUsername);
+            values.put("email", newEmail);
+
+            int rowsAffected = db.update("users", values, "username = ?", new String[]{oldUsername});
+            if (rowsAffected > 0) {
+                Log.d(TAG, "更新用户信息成功: oldUsername=" + oldUsername + ", newUsername=" + newUsername);
+
+                // 如果用户名发生变化，更新 SharedPreferences
+                if (!oldUsername.equals(newUsername)) {
+                    updateCurrentUsername(newUsername);
+                }
+                return true;
+            } else {
+                Log.w(TAG, "更新用户信息失败: 未找到用户 " + oldUsername);
+                return false;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "更新用户信息异常: " + e.getMessage(), e);
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+
+    // 更新 SharedPreferences 中的当前用户名
+    private void updateCurrentUsername(String newUsername) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_USERNAME, newUsername);
+        editor.apply();
+        Log.d(TAG, "更新 SharedPreferences 中的用户名为: " + newUsername);
     }
 
     // 生成盐

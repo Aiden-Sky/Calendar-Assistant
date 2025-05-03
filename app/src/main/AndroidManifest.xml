@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- 添加存储权限，支持头像上传 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Desine"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.Edit_profile_activity"
+            android:exported="false" />
         <activity
             android:name=".activities.Login_activity"
             android:exported="true"
@@ -25,10 +31,7 @@
         <activity
             android:name=".activities.Home_activity"
             android:exported="true"
-            android:theme="@style/Theme.Desine">
-        </activity>
-
-        <!-- 添加以下两行以注册缺失的 Activity -->
+            android:theme="@style/Theme.Desine" /> <!-- 注册其他 Activity -->
         <activity android:name=".activities.login_rigist_activity" />
         <activity android:name=".activities.login_forget_activity" />
 

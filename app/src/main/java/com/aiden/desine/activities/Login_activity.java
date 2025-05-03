@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -50,7 +51,7 @@ public class Login_activity extends AppCompatActivity {
     }
 
     private void initSharedPreferences() {
-        sharedPreferences = getSharedPreferences("login_prefs", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE); // 修改为 "user_prefs"
     }
 
     private void checkAutoLogin() {
@@ -69,11 +70,10 @@ public class Login_activity extends AppCompatActivity {
             String savedUsername = sharedPreferences.getString("username", "");
             String savedPassword = sharedPreferences.getString("password", "");
             usernameInput.setText(savedUsername);
-            passwordInput.setText(savedPassword); // 自动填充密码
+            passwordInput.setText(savedPassword);
             rememberPasswordCheckbox.setChecked(true);
         }
     }
-
 
     private void setupListeners() {
         loginButton.setOnClickListener(v -> onLoginClick());
@@ -88,13 +88,13 @@ public class Login_activity extends AppCompatActivity {
 
         rememberPasswordCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!isChecked) {
-                autoLoginCheckbox.setChecked(false); // 如果取消记住密码，自动登录也取消
+                autoLoginCheckbox.setChecked(false);
             }
         });
 
         autoLoginCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                rememberPasswordCheckbox.setChecked(true); // 自动登录必须记住密码
+                rememberPasswordCheckbox.setChecked(true);
             }
         });
     }
@@ -105,7 +105,7 @@ public class Login_activity extends AppCompatActivity {
 
         if (validateInput(username, password)) {
             if (userDao.loginUser(username, password)) {
-                saveLoginState(username, password); // 保存用户名和密码
+                saveLoginState(username, password);
                 Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, Home_activity.class));
                 finish();
@@ -115,17 +115,20 @@ public class Login_activity extends AppCompatActivity {
         }
     }
 
-
     private void saveLoginState(String username, String password) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        // 始终保存用户名，以便 PersonalFragment 获取
+        editor.putString("username", username);
+        Log.d("Login_activity", "保存用户名: " + username);
+
+        // 如果勾选记住密码，则保存密码
         if (rememberPasswordCheckbox.isChecked()) {
-            editor.putString("username", username);
-            editor.putString("password", password); // 保存密码
+            editor.putString("password", password);
         } else {
-            editor.remove("username");
-            editor.remove("password"); // 未勾选时清除数据
+            editor.remove("password"); // 不记住密码时清除
         }
         editor.putBoolean("remember_password", rememberPasswordCheckbox.isChecked());
+        editor.putBoolean("auto_login", autoLoginCheckbox.isChecked());
         editor.apply();
     }
 
@@ -140,9 +143,6 @@ public class Login_activity extends AppCompatActivity {
         }
         return true;
     }
-
-
-
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

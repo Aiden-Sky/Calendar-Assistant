@@ -31,7 +31,7 @@ public class Home_activity extends AppCompatActivity {
             habitFragment = new HabitFragment();
             tomatoFragment = new TomatoFragment();
             scheduleFragment = new ScheduleFragment();
-//            mineFragment = new MineFragment();
+            mineFragment = new PersonalFragment();
             statisticFragment = new StatisticFragment();
 
             // 添加第一个Fragment
@@ -40,7 +40,7 @@ public class Home_activity extends AppCompatActivity {
                     .add(R.id.fragment_container, habitFragment)
                     .add(R.id.fragment_container, tomatoFragment).hide(tomatoFragment)
                     .add(R.id.fragment_container, scheduleFragment).hide(scheduleFragment)
-//                    .add(R.id.fragment_container, mineFragment).hide(mineFragment)
+                    .add(R.id.fragment_container, mineFragment).hide(mineFragment)
                     .add(R.id.fragment_container, statisticFragment).hide(statisticFragment)
                     .commit();
 

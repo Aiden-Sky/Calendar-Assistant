@@ -28,7 +28,7 @@ import com.aiden.desine.R;
 import com.aiden.desine.activities.Edit_profile_activity;
 import com.aiden.desine.activities.Login_activity;
 import com.aiden.desine.dao.User_dao;
-import com.aiden.desine.model.User_model;
+import com.aiden.desine.model.User;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -167,7 +167,7 @@ public class PersonalFragment extends Fragment {
     private void loadUserAvatar() {
         Log.d(TAG, "loadUserAvatar 开始");
         try {
-            User_model user = userDao.getUser(currentUsername);
+            User user = userDao.getUser(currentUsername);
             if (user != null && user.getProfilePicturePath() != null) {
                 String path = user.getProfilePicturePath();
                 Log.d(TAG, "加载头像路径: " + path);

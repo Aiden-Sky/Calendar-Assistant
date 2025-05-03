@@ -1,6 +1,6 @@
 package com.aiden.desine.model;
 
-public class User_model {
+public class User {
     private int id;
     private String username;
     private String password; // 仅用于注册时传递明文密码
@@ -9,15 +9,15 @@ public class User_model {
     private String profilePicturePath;  // 新增字段：存储头像路径
 
     // 默认构造函数
-    public User_model() {}
+    public User() {}
 
     // 兼容旧代码的构造函数，profilePicturePath 默认 null
-    public User_model(String username, String password, String phone, String email) {
+    public User(String username, String password, String phone, String email) {
         this(username, password, phone, email, null);
     }
 
     // 包含 profilePicturePath 的构造函数
-    public User_model(String username, String password, String phone, String email, String profilePicturePath) {
+    public User(String username, String password, String phone, String email, String profilePicturePath) {
         this.username = username;
         this.password = password;
         this.phone = phone;

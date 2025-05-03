@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.aiden.desine.R;
 import com.aiden.desine.dao.User_dao;
-import com.aiden.desine.model.User_model;
+import com.aiden.desine.model.User;
 
 public class Edit_profile_activity extends AppCompatActivity {
     private static final String TAG = "EditProfileActivity";
@@ -56,7 +56,7 @@ public class Edit_profile_activity extends AppCompatActivity {
 
     /** 加载用户信息到输入框 */
     private void loadUserInfo() {
-        User_model user = userDao.getUser(currentUsername);
+        User user = userDao.getUser(currentUsername);
         if (user != null) {
             editTextUsername.setText(user.getUsername());
             editTextPhone.setText(user.getPhone());
@@ -83,7 +83,7 @@ public class Edit_profile_activity extends AppCompatActivity {
         }
 
         // 创建更新后的用户对象
-        User_model updatedUser = new User_model();
+        User updatedUser = new User();
         updatedUser.setUsername(newUsername);
         updatedUser.setPhone(newPhone);
         updatedUser.setEmail(newEmail);

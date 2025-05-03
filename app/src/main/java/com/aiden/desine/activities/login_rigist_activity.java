@@ -8,7 +8,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.aiden.desine.R;
 import com.aiden.desine.dao.User_dao;
-import com.aiden.desine.model.User_model;
+import com.aiden.desine.model.User;
 
 public class login_rigist_activity extends AppCompatActivity {
     private TextInputEditText usernameInput;
@@ -53,7 +53,7 @@ public class login_rigist_activity extends AppCompatActivity {
         String email = emailInput.getText().toString();
 
         if (validateInput(username, password, confirmPassword, phone, email)) {
-            User_model user = new User_model(username, password, phone, email);
+            User user = new User(username, password, phone, email);
             if (userDao.registerUser(user)) {
                 Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, Login_activity.class);

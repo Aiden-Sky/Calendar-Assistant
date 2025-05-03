@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.aiden.desine.database.DBHelper;
-import com.aiden.desine.model.User_model;
+import com.aiden.desine.model.User;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -41,7 +41,7 @@ public class User_dao {
     }
 
     // 获取当前登录用户的信息
-    public User_model getCurrentUser() {
+    public User getCurrentUser() {
         String username = getCurrentUsername();
         if (username == null) {
             Log.e(TAG, "无法获取当前用户，用户名为空");
@@ -51,7 +51,7 @@ public class User_dao {
     }
 
     // 注册用户
-    public boolean registerUser(User_model user) {
+    public boolean registerUser(User user) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
             String salt = generateSalt();
@@ -114,7 +114,7 @@ public class User_dao {
     }
 
     // 更新用户信息
-    public boolean updateUser(String oldUsername, User_model updatedUser) {
+    public boolean updateUser(String oldUsername, User updatedUser) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = null;
         try {
@@ -198,13 +198,13 @@ public class User_dao {
     }
 
     // 获取用户信息（指定用户名）
-    public User_model getUser(String username) {
+    public User getUser(String username) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
             cursor = db.query("users", null, "username = ?", new String[]{username}, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
-                User_model user = new User_model();
+                User user = new User();
                 user.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
                 user.setUsername(cursor.getString(cursor.getColumnIndexOrThrow("username")));
                 user.setPhone(cursor.getString(cursor.getColumnIndexOrThrow("phone")));

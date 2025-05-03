@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aiden.desine.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ScheduleMainFragment extends Fragment {
     private CalendarView calendarView;
@@ -26,6 +27,7 @@ public class ScheduleMainFragment extends Fragment {
         
         setupCalendarView();
         setupTaskList();
+        setupFab(view);
         
         return view;
     }
@@ -43,5 +45,13 @@ public class ScheduleMainFragment extends Fragment {
 
     private void loadTasksForDate(int year, int month, int dayOfMonth) {
         // TODO: 加载选定日期的任务
+    }
+
+    private void setupFab(View view) {
+        FloatingActionButton fab = view.findViewById(R.id.fab_add_task);
+        fab.setOnClickListener(v -> {
+            AddScheduleDialogFragment dialog = new AddScheduleDialogFragment();
+            dialog.show(getChildFragmentManager(), "add_schedule");
+        });
     }
 }

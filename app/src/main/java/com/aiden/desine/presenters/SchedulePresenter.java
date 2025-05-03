@@ -45,6 +45,13 @@ public class SchedulePresenter {
     }
     
     /**
+     * 获取当前用户ID
+     */
+    public long getCurrentUserId() {
+        return currentUserId;
+    }
+    
+    /**
      * 保存日程
      */
     public void saveSchedule(String title, String description, Calendar dateTime, 

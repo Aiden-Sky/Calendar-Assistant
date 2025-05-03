@@ -18,12 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.aiden.desine.R;
 import com.aiden.desine.activities.Edit_profile_activity;
 import com.aiden.desine.activities.Login_activity;
@@ -42,7 +42,6 @@ public class PersonalFragment extends Fragment {
     private static final int REQUEST_CODE_PICK_IMAGE = 1;
     private static final String TAG = "PersonalFragment";
     private ImageView avatarImageView;
-    private Button uploadAvatarButton;
     private User_dao userDao;
     private String currentUsername;
     private String profilePictureDir;
@@ -56,13 +55,15 @@ public class PersonalFragment extends Fragment {
 
         // 初始化控件
         avatarImageView = view.findViewById(R.id.avatar_image_view);
-        uploadAvatarButton = view.findViewById(R.id.upload_avatar_button);
-        Switch nightModeSwitch = view.findViewById(R.id.night_mode_switch);
+        SwitchMaterial nightModeSwitch = view.findViewById(R.id.night_mode_switch);
         Spinner languageSpinner = view.findViewById(R.id.language_spinner);
         Button editProfileButton = view.findViewById(R.id.edit_profile_button);
 
+        // 设置头像点击事件
+        avatarImageView.setOnClickListener(v -> pickImage());
+
         // 检查控件初始化
-        if (avatarImageView == null || uploadAvatarButton == null || nightModeSwitch == null ||
+        if (avatarImageView == null || nightModeSwitch == null ||
                 languageSpinner == null || editProfileButton == null) {
             Log.e(TAG, "控件初始化失败");
             Toast.makeText(getContext(), "页面加载失败", Toast.LENGTH_SHORT).show();
@@ -85,9 +86,6 @@ public class PersonalFragment extends Fragment {
 
         // 异步加载头像
         executorService.execute(this::loadUserAvatar);
-
-        // 设置上传头像按钮
-        uploadAvatarButton.setOnClickListener(v -> pickImage());
 
         // 设置夜间模式开关
         int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;

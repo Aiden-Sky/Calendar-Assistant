@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 日程/任务数据仓库，负责数据持久化操作
+ * 日程数据访问对象，负责与数据库交互
  */
 public class Schedule_dao {
-    private static final String TAG = "ScheduleRepository";
+    private static final String TAG = "Schedule_dao";
     private DBHelper dbHelper;
 
     public Schedule_dao(Context context) {
@@ -248,7 +248,14 @@ public class Schedule_dao {
         schedule.setCategory(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_CATEGORY)));
         schedule.setPriority(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_PRIORITY)));
         schedule.setCompleted(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COL_IS_COMPLETED)) == 1);
-        schedule.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_CREATED_AT)));
+        
+        try {
+            schedule.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_CREATED_AT)));
+        } catch (IllegalArgumentException e) {
+            // 处理旧版本数据库可能不存在该字段的情况
+            schedule.setCreatedAt("");
+        }
+        
         return schedule;
     }
 } 

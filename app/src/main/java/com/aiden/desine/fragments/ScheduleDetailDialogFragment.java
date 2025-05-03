@@ -17,20 +17,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.aiden.desine.R;
+import com.aiden.desine.dao.Schedule_dao;
 import com.aiden.desine.model.Schedule;
 import com.aiden.desine.presenters.SchedulePresenter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * 添加日程对话框，实现MVP架构中的View层
+ * 日程详情对话框，用于查看和编辑日程
  */
-public class AddScheduleDialogFragment extends DialogFragment implements SchedulePresenter.ScheduleView {
+public class ScheduleDetailDialogFragment extends DialogFragment implements SchedulePresenter.ScheduleView {
     private TextInputEditText titleInput;
     private TextInputEditText dateInput;
     private TextInputEditText timeInput;
@@ -42,6 +45,7 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
     private TextInputEditText descriptionInput;
     private MaterialButton btnCancel;
     private MaterialButton btnSave;
+    private MaterialButton btnDelete;
     
     private Calendar selectedDateTime;
     private Calendar selectedEndDateTime;
@@ -49,17 +53,33 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
     private SimpleDateFormat timeFormat;
     
     private SchedulePresenter presenter;
-    private OnScheduleSavedListener onScheduleSavedListener;
+    private Schedule currentSchedule;
+    private OnScheduleUpdatedListener onScheduleUpdatedListener;
+    
+    // 传入的日程ID参数
+    private static final String ARG_SCHEDULE_ID = "schedule_id";
     
     /**
-     * 定义回调接口，用于通知外部组件日程已保存
+     * 创建实例，传入日程ID
      */
-    public interface OnScheduleSavedListener {
-        void onScheduleSaved(Schedule schedule);
+    public static ScheduleDetailDialogFragment newInstance(long scheduleId) {
+        ScheduleDetailDialogFragment fragment = new ScheduleDetailDialogFragment();
+        Bundle args = new Bundle();
+        args.putLong(ARG_SCHEDULE_ID, scheduleId);
+        fragment.setArguments(args);
+        return fragment;
     }
     
-    public void setOnScheduleSavedListener(OnScheduleSavedListener listener) {
-        this.onScheduleSavedListener = listener;
+    /**
+     * 定义回调接口，用于通知外部组件日程已更新或删除
+     */
+    public interface OnScheduleUpdatedListener {
+        void onScheduleUpdated(Schedule schedule);
+        void onScheduleDeleted(long scheduleId);
+    }
+    
+    public void setOnScheduleUpdatedListener(OnScheduleUpdatedListener listener) {
+        this.onScheduleUpdatedListener = listener;
     }
 
     @Override
@@ -81,6 +101,14 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
         setupDateTimeFormatters();
         setupListeners();
         setupDropdowns();
+        
+        // 加载日程详情
+        if (getArguments() != null) {
+            long scheduleId = getArguments().getLong(ARG_SCHEDULE_ID, -1);
+            if (scheduleId != -1) {
+                loadScheduleDetails(scheduleId);
+            }
+        }
         
         return view;
     }
@@ -115,9 +143,18 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
         btnCancel = view.findViewById(R.id.btn_cancel);
         btnSave = view.findViewById(R.id.btn_save);
         
+        // 添加删除按钮
+        btnDelete = new MaterialButton(requireContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle);
+        btnDelete.setText("删除");
+        btnDelete.setTextColor(requireContext().getResources().getColor(android.R.color.holo_red_dark));
+        
+        // 将删除按钮添加到按钮容器中
+        ViewGroup buttonContainer = (ViewGroup) btnSave.getParent();
+        buttonContainer.addView(btnDelete, 0); // 添加到第一个位置
+        
         selectedDateTime = Calendar.getInstance();
         selectedEndDateTime = Calendar.getInstance();
-        selectedEndDateTime.add(Calendar.HOUR_OF_DAY, 1); // 默认结束时间比开始时间晚1小时
+        selectedEndDateTime.add(Calendar.HOUR_OF_DAY, 1);
     }
 
     private void setupDateTimeFormatters() {
@@ -134,17 +171,13 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
         btnCancel.setOnClickListener(v -> dismiss());
         
         btnSave.setOnClickListener(v -> {
-            // 使用Presenter保存日程
-            presenter.saveSchedule(
-                titleInput.getText() != null ? titleInput.getText().toString() : "",
-                descriptionInput.getText() != null ? descriptionInput.getText().toString() : "",
-                selectedDateTime,
-                selectedEndDateTime,
-                repeatInput.getText().toString(),
-                reminderInput.getText().toString(),
-                categoryInput.getText().toString(),
-                priorityInput.getText().toString()
-            );
+            updateSchedule();
+        });
+        
+        btnDelete.setOnClickListener(v -> {
+            if (currentSchedule != null) {
+                deleteSchedule(currentSchedule.getId());
+            }
         });
     }
 
@@ -160,7 +193,6 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
             repeatOptions
         );
         repeatInput.setAdapter(repeatAdapter);
-        repeatInput.setText(repeatOptions[0], false);
         
         // 提醒时间下拉选项
         String[] reminderOptions = new String[]{"无提醒", "提前5分钟", "提前15分钟", "提前30分钟", "提前1小时", "提前1天"};
@@ -170,7 +202,6 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
             reminderOptions
         );
         reminderInput.setAdapter(reminderAdapter);
-        reminderInput.setText(reminderOptions[0], false);
         
         // 标签分类下拉选项
         String[] categoryOptions = new String[]{"工作", "学习", "生活", "健康", "购物", "娱乐", "其他"};
@@ -180,7 +211,6 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
             categoryOptions
         );
         categoryInput.setAdapter(categoryAdapter);
-        categoryInput.setText(categoryOptions[0], false);
     }
 
     private void setupPriorityDropdown() {
@@ -191,7 +221,6 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
             priorities
         );
         priorityInput.setAdapter(adapter);
-        priorityInput.setText(priorities[1], false); // 默认设为"中"优先级
     }
 
     private void showDatePicker() {
@@ -250,55 +279,150 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
         endTimeInput.setText(timeFormat.format(selectedEndDateTime.getTime()));
     }
     
-    // 创建一个Schedule对象，用于回调
-    private Schedule createScheduleFromForm(long id) {
-        return new Schedule(
-            presenter.getCurrentUserId(),
-            titleInput.getText() != null ? titleInput.getText().toString().trim() : "",
-            descriptionInput.getText() != null ? descriptionInput.getText().toString().trim() : "",
-            dateFormat.format(selectedDateTime.getTime()),
-            timeFormat.format(selectedDateTime.getTime()),
-            timeFormat.format(selectedEndDateTime.getTime()),
-            repeatInput.getText().toString(),
-            reminderInput.getText().toString(),
-            categoryInput.getText().toString(),
-            priorityInput.getText().toString()
-        );
+    /**
+     * 加载日程详情
+     */
+    private void loadScheduleDetails(long scheduleId) {
+        // 从数据库获取日程详情
+        Schedule_dao dao = new Schedule_dao(requireContext());
+        currentSchedule = dao.getScheduleById(scheduleId);
+        
+        if (currentSchedule != null) {
+            // 填充表单
+            titleInput.setText(currentSchedule.getTitle());
+            descriptionInput.setText(currentSchedule.getDescription());
+            
+            // 解析日期和时间
+            try {
+                Date date = dateFormat.parse(currentSchedule.getDate());
+                Date startTime = timeFormat.parse(currentSchedule.getStartTime());
+                
+                if (date != null && startTime != null) {
+                    selectedDateTime.setTime(date);
+                    // 设置时间部分
+                    Calendar startCal = Calendar.getInstance();
+                    startCal.setTime(startTime);
+                    selectedDateTime.set(Calendar.HOUR_OF_DAY, startCal.get(Calendar.HOUR_OF_DAY));
+                    selectedDateTime.set(Calendar.MINUTE, startCal.get(Calendar.MINUTE));
+                }
+                
+                // 解析结束时间
+                Date endTime = timeFormat.parse(currentSchedule.getEndTime());
+                if (endTime != null) {
+                    selectedEndDateTime.setTime(date); // 同一天
+                    Calendar endCal = Calendar.getInstance();
+                    endCal.setTime(endTime);
+                    selectedEndDateTime.set(Calendar.HOUR_OF_DAY, endCal.get(Calendar.HOUR_OF_DAY));
+                    selectedEndDateTime.set(Calendar.MINUTE, endCal.get(Calendar.MINUTE));
+                }
+                
+                updateDateTimeDisplay();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            
+            // 设置下拉选项
+            repeatInput.setText(currentSchedule.getRepeatType(), false);
+            reminderInput.setText(currentSchedule.getReminderTime(), false);
+            categoryInput.setText(currentSchedule.getCategory(), false);
+            priorityInput.setText(currentSchedule.getPriority(), false);
+        }
+    }
+    
+    /**
+     * 更新日程
+     */
+    private void updateSchedule() {
+        if (currentSchedule == null) {
+            return;
+        }
+        
+        // 验证输入
+        if (titleInput.getText() == null || titleInput.getText().toString().trim().isEmpty()) {
+            showValidationError("请输入任务标题");
+            return;
+        }
+        
+        if (selectedEndDateTime.before(selectedDateTime)) {
+            showValidationError("结束时间不能早于开始时间");
+            return;
+        }
+        
+        // 更新日程对象
+        currentSchedule.setTitle(titleInput.getText().toString().trim());
+        currentSchedule.setDescription(descriptionInput.getText() != null ? descriptionInput.getText().toString().trim() : "");
+        currentSchedule.setDate(dateFormat.format(selectedDateTime.getTime()));
+        currentSchedule.setStartTime(timeFormat.format(selectedDateTime.getTime()));
+        currentSchedule.setEndTime(timeFormat.format(selectedEndDateTime.getTime()));
+        currentSchedule.setRepeatType(repeatInput.getText().toString());
+        currentSchedule.setReminderTime(reminderInput.getText().toString());
+        currentSchedule.setCategory(categoryInput.getText().toString());
+        currentSchedule.setPriority(priorityInput.getText().toString());
+        
+        // 保存到数据库
+        Schedule_dao dao = new Schedule_dao(requireContext());
+        boolean success = dao.updateSchedule(currentSchedule);
+        
+        if (success) {
+            Toast.makeText(requireContext(), "日程更新成功", Toast.LENGTH_SHORT).show();
+            
+            // 通知监听器
+            if (onScheduleUpdatedListener != null) {
+                onScheduleUpdatedListener.onScheduleUpdated(currentSchedule);
+            }
+            
+            dismiss();
+        } else {
+            Toast.makeText(requireContext(), "更新失败，请重试", Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+    /**
+     * 删除日程
+     */
+    private void deleteSchedule(long scheduleId) {
+        Schedule_dao dao = new Schedule_dao(requireContext());
+        boolean success = dao.deleteSchedule(scheduleId);
+        
+        if (success) {
+            Toast.makeText(requireContext(), "日程已删除", Toast.LENGTH_SHORT).show();
+            
+            // 通知监听器
+            if (onScheduleUpdatedListener != null) {
+                onScheduleUpdatedListener.onScheduleDeleted(scheduleId);
+            }
+            
+            dismiss();
+        } else {
+            Toast.makeText(requireContext(), "删除失败，请重试", Toast.LENGTH_SHORT).show();
+        }
     }
     
     // 实现ScheduleView接口的方法
     
     @Override
     public void showLoading() {
-        // 可以实现加载指示器，如进度条
-        btnSave.setEnabled(false);
+        // 实现加载指示器
     }
 
     @Override
     public void hideLoading() {
-        btnSave.setEnabled(true);
+        // 隐藏加载指示器
     }
 
     @Override
     public void showScheduleSaved() {
-        Toast.makeText(requireContext(), "日程保存成功", Toast.LENGTH_SHORT).show();
-        
-        // 创建一个日程对象，设置ID并触发回调
-        if (onScheduleSavedListener != null) {
-            // 这里通过DAO重新查询最新添加的日程会更准确，但为简化，直接构建一个对象
-            Schedule schedule = createScheduleFromForm(-1);
-            onScheduleSavedListener.onScheduleSaved(schedule);
-        }
+        // 不需要实现，因为使用直接方法更新
     }
 
     @Override
     public void showScheduleSaveFailed() {
-        Toast.makeText(requireContext(), "保存失败，请重试", Toast.LENGTH_SHORT).show();
+        // 不需要实现，因为使用直接方法更新
     }
 
     @Override
     public void showSchedules(List<Schedule> schedules) {
-        // 此方法在当前对话框中不需要实现，因为它不显示日程列表
+        // 不需要实现
     }
 
     @Override
@@ -308,20 +432,11 @@ public class AddScheduleDialogFragment extends DialogFragment implements Schedul
 
     @Override
     public void clearFields() {
-        titleInput.setText("");
-        descriptionInput.setText("");
-        selectedDateTime = Calendar.getInstance();
-        selectedEndDateTime = Calendar.getInstance();
-        selectedEndDateTime.add(Calendar.HOUR_OF_DAY, 1);
-        updateDateTimeDisplay();
-        repeatInput.setText("不重复", false);
-        reminderInput.setText("无提醒", false);
-        categoryInput.setText("工作", false);
-        priorityInput.setText("中", false);
+        // 不需要实现
     }
 
     @Override
     public void closeDialog() {
         dismiss();
     }
-}
+} 

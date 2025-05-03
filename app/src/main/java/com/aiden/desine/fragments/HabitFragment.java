@@ -17,8 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HabitFragment extends Fragment {
 
-    private CalendarView calendarView;
-    private RecyclerView habitList;
+
     private FloatingActionButton fabAddHabit;
 
     @Nullable
@@ -30,8 +29,7 @@ public class HabitFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_habit, container, false);
 
         // 绑定控件
-        calendarView = view.findViewById(R.id.calendarView);
-        habitList = view.findViewById(R.id.habit_list);
+
         fabAddHabit = view.findViewById(R.id.fab_add_habit);
 
         // 示例点击事件

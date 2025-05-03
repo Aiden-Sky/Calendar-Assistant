@@ -31,5 +31,11 @@
         <!-- 添加以下两行以注册缺失的 Activity -->
         <activity android:name=".activities.login_rigist_activity" />
         <activity android:name=".activities.login_forget_activity" />
+
+
     </application>
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"
+        tools:ignore="ManifestOrder" />
+
 </manifest>

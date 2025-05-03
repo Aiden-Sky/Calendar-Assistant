@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_habit"
         android:title="习惯打卡"
         android:icon="@drawable/ic_menu_mark"/>
     <item
@@ -9,15 +9,15 @@
         android:title="日程管理"
         android:icon="@drawable/ic_menu_calende"/>
     <item
-        android:id="@+id/nav_habit"
+        android:id="@+id/nav_tomato"
         android:title="番茄时钟"
         android:icon="@drawable/ic_menu_tomato"/>
     <item
-        android:id="@+id/nav_profile"
+        android:id="@+id/nav_statistic"
         android:title="数据统计"
         android:icon="@drawable/ic_menu_statistics"/>
     <item
-        android:id="@+id/nav_setting"
+        android:id="@+id/nav_mine"
         android:title="个人中心"
         android:icon="@drawable/ic_menue_personal"/>
 </menu>

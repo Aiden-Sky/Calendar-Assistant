@@ -55,7 +55,7 @@ public class PersonalFragment extends Fragment {
 
         // 初始化控件
         avatarImageView = view.findViewById(R.id.avatar_image_view);
-        SwitchMaterial nightModeSwitch = view.findViewById(R.id.night_mode_switch);
+        setupNightMode(view);
         Spinner languageSpinner = view.findViewById(R.id.language_spinner);
         Button editProfileButton = view.findViewById(R.id.edit_profile_button);
 
@@ -63,8 +63,7 @@ public class PersonalFragment extends Fragment {
         avatarImageView.setOnClickListener(v -> pickImage());
 
         // 检查控件初始化
-        if (avatarImageView == null || nightModeSwitch == null ||
-                languageSpinner == null || editProfileButton == null) {
+        if (avatarImageView == null || languageSpinner == null || editProfileButton == null) {
             Log.e(TAG, "控件初始化失败");
             Toast.makeText(getContext(), "页面加载失败", Toast.LENGTH_SHORT).show();
             return view;
@@ -86,19 +85,6 @@ public class PersonalFragment extends Fragment {
 
         // 异步加载头像
         executorService.execute(this::loadUserAvatar);
-
-        // 设置夜间模式开关
-        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        nightModeSwitch.setChecked(currentNightMode == Configuration.UI_MODE_NIGHT_YES);
-        nightModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            Log.d(TAG, "夜间模式切换: " + isChecked);
-            AppCompatDelegate.setDefaultNightMode(isChecked ?
-                    AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-            getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-                    .edit()
-                    .putBoolean("night_mode", isChecked)
-                    .apply();
-        });
 
         // 设置语言选择下拉框
         String[] languages = {"中文", "English"};
@@ -138,6 +124,51 @@ public class PersonalFragment extends Fragment {
         return view;
     }
 
+    private void setupNightMode(View view) {
+        SwitchMaterial nightModeSwitch = view.findViewById(R.id.night_mode_switch);
+        
+        // 获取当前夜间模式状态
+        boolean isNightMode = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                .getBoolean("night_mode", false);
+        
+        // 设置开关初始状态
+        nightModeSwitch.setChecked(isNightMode);
+        
+        nightModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // 保存状态到 SharedPreferences
+            getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("night_mode", isChecked)
+                    .apply();
+
+            // 在重新创建活动之前保存要显示的页面信息
+            getActivity().getSharedPreferences("navigation_prefs", Context.MODE_PRIVATE)
+                    .edit()
+                    .putInt("default_page", R.id.nav_mine)
+                    .apply();
+            
+            // 应用夜间模式
+            AppCompatDelegate.setDefaultNightMode(
+                isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+            );
+            
+            // 重新创建activity以应用新主题
+            getActivity().recreate();
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 确保开关状态与实际主题同步
+        if (getView() != null) {
+            SwitchMaterial nightModeSwitch = getView().findViewById(R.id.night_mode_switch);
+            boolean isNightMode = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                    .getBoolean("night_mode", false);
+            nightModeSwitch.setChecked(isNightMode);
+        }
+    }
+
     private void changeLanguage(String language) {
         try {
             Log.d(TAG, "开始切换语言: " + language);
@@ -154,7 +185,12 @@ public class PersonalFragment extends Fragment {
                     .apply();
             currentLanguage = language;
 
-            getActivity().recreate();
+            // 使用新的方式重启Activity以保留导航状态
+            Intent intent = getActivity().getIntent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            getActivity().finish();
+            getActivity().startActivity(intent);
+            
             Log.d(TAG, "语言切换完成");
         } catch (Exception e) {
             Log.e(TAG, "语言切换异常: " + e.getMessage(), e);

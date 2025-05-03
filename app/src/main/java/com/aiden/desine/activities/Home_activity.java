@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.aiden.desine.fragments.*;
@@ -23,6 +24,13 @@ public class Home_activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 在设置布局之前应用主题
+        boolean isNightMode = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                .getBoolean("night_mode", false);
+        AppCompatDelegate.setDefaultNightMode(
+            isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+        );
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -34,17 +42,36 @@ public class Home_activity extends AppCompatActivity {
             mineFragment = new PersonalFragment();
             statisticFragment = new StatisticFragment();
 
-            // 添加第一个Fragment
+            // 添加所有Fragment
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, habitFragment)
-                    .add(R.id.fragment_container, tomatoFragment).hide(tomatoFragment)
-                    .add(R.id.fragment_container, scheduleFragment).hide(scheduleFragment)
-                    .add(R.id.fragment_container, mineFragment).hide(mineFragment)
-                    .add(R.id.fragment_container, statisticFragment).hide(statisticFragment)
+                    .add(R.id.fragment_container, habitFragment, "habitFragment").hide(habitFragment)
+                    .add(R.id.fragment_container, tomatoFragment, "tomatoFragment").hide(tomatoFragment)
+                    .add(R.id.fragment_container, scheduleFragment, "scheduleFragment").hide(scheduleFragment)
+                    .add(R.id.fragment_container, mineFragment, "mineFragment")  // 不隐藏mineFragment
+                    .add(R.id.fragment_container, statisticFragment, "statisticFragment").hide(statisticFragment)
                     .commit();
 
-            currentFragment = habitFragment;
+            // 根据夜间模式设置当前Fragment
+            currentFragment = isNightMode ? mineFragment : habitFragment;
+        } else {
+            // 如果状态已保存，从FragmentManager中恢复Fragment
+            habitFragment = getSupportFragmentManager().findFragmentByTag("habitFragment");
+            tomatoFragment = getSupportFragmentManager().findFragmentByTag("tomatoFragment");
+            scheduleFragment = getSupportFragmentManager().findFragmentByTag("scheduleFragment");
+            mineFragment = getSupportFragmentManager().findFragmentByTag("mineFragment");
+            statisticFragment = getSupportFragmentManager().findFragmentByTag("statisticFragment");
+            
+            // 尝试从保存状态恢复当前Fragment
+            if (savedInstanceState.containsKey("currentFragment")) {
+                try {
+                    currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "currentFragment");
+                } catch (Exception e) {
+                    currentFragment = habitFragment; // 默认回到习惯Fragment
+                }
+            } else {
+                currentFragment = habitFragment;
+            }
         }
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -81,7 +108,8 @@ public class Home_activity extends AppCompatActivity {
 
         // 设置默认选中项
         if (savedInstanceState == null) {
-            bottomNavigationView.setSelectedItemId(R.id.nav_habit);
+            // 根据夜间模式设置默认选中的导航项
+            bottomNavigationView.setSelectedItemId(isNightMode ? R.id.nav_mine : R.id.nav_habit);
         }
     }
 
@@ -90,12 +118,27 @@ public class Home_activity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         // 保存当前Fragment的状态
         getSupportFragmentManager().putFragment(outState, "currentFragment", currentFragment);
+        // 保存当前选中的导航项
+        outState.putInt("selectedItemId", bottomNavigationView.getSelectedItemId());
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         // 恢复Fragment状态
-        currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "currentFragment");
+        if (savedInstanceState.containsKey("currentFragment")) {
+            currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "currentFragment");
+            
+            // 恢复底部导航选中状态
+            int selectedItemId = savedInstanceState.getInt("selectedItemId", R.id.nav_habit);
+            bottomNavigationView.setSelectedItemId(selectedItemId);
+            
+            // 确保所有Fragment加载并设置当前Fragment可见
+            if (habitFragment == null) habitFragment = getSupportFragmentManager().findFragmentByTag("habitFragment");
+            if (tomatoFragment == null) tomatoFragment = getSupportFragmentManager().findFragmentByTag("tomatoFragment");
+            if (scheduleFragment == null) scheduleFragment = getSupportFragmentManager().findFragmentByTag("scheduleFragment");
+            if (mineFragment == null) mineFragment = getSupportFragmentManager().findFragmentByTag("mineFragment");
+            if (statisticFragment == null) statisticFragment = getSupportFragmentManager().findFragmentByTag("statisticFragment");
+        }
     }
 }

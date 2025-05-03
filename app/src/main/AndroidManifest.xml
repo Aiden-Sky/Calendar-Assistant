@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Desine"
+        android:theme="@style/Theme.Design"
         tools:targetApi="31">
         <activity
             android:name=".activities.Edit_profile_activity"
@@ -21,7 +21,7 @@
         <activity
             android:name=".activities.Login_activity"
             android:exported="true"
-            android:theme="@style/Theme.Desine">
+            android:theme="@style/Theme.Design">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,7 +31,7 @@
         <activity
             android:name=".activities.Home_activity"
             android:exported="true"
-            android:theme="@style/Theme.Desine" /> <!-- 注册其他 Activity -->
+            android:theme="@style/Theme.Design" /> <!-- 注册其他 Activity -->
         <activity android:name=".activities.login_rigist_activity" />
         <activity android:name=".activities.login_forget_activity" />
 

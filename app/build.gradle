@@ -38,9 +38,10 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.6.0'
     implementation libs.activity
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit

@@ -22,7 +22,7 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_nav_menu"
 
-        app:itemIconTint="@null"
+
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

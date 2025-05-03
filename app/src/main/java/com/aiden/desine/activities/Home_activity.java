@@ -42,18 +42,22 @@ public class Home_activity extends AppCompatActivity {
             mineFragment = new PersonalFragment();
             statisticFragment = new StatisticFragment();
 
-            // 添加所有Fragment
+            // 修改Fragment的添加逻辑，默认全部隐藏
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, habitFragment, "habitFragment").hide(habitFragment)
                     .add(R.id.fragment_container, tomatoFragment, "tomatoFragment").hide(tomatoFragment)
                     .add(R.id.fragment_container, scheduleFragment, "scheduleFragment").hide(scheduleFragment)
-                    .add(R.id.fragment_container, mineFragment, "mineFragment")  // 不隐藏mineFragment
+                    .add(R.id.fragment_container, mineFragment, "mineFragment").hide(mineFragment)
                     .add(R.id.fragment_container, statisticFragment, "statisticFragment").hide(statisticFragment)
                     .commit();
 
-            // 根据夜间模式设置当前Fragment
+            // 根据夜间模式设置当前Fragment并显示
             currentFragment = isNightMode ? mineFragment : habitFragment;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .show(currentFragment)
+                    .commit();
         } else {
             // 如果状态已保存，从FragmentManager中恢复Fragment
             habitFragment = getSupportFragmentManager().findFragmentByTag("habitFragment");

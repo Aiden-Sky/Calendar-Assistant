@@ -99,7 +99,7 @@
         android:layout_marginBottom="100dp"
 
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#5E97F6"
+        app:backgroundTint="#4B76B8"
         app:tint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

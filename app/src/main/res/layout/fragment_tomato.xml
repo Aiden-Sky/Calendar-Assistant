@@ -31,7 +31,7 @@
         app:cardElevation="0dp"
         app:strokeWidth="2dp"
         app:strokeColor="#E0E0E0"
-        app:cardBackgroundColor="#FFFFFF"
+
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="25:00"
-                android:textColor="#2196F3"
+                android:textColor="#4B76B8"
                 android:textSize="52sp"
                 android:fontFamily="sans-serif-light"
                 android:textStyle="bold"/>
@@ -100,7 +100,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:cornerRadius="25dp"
-            android:backgroundTint="#2196F3"
+            android:backgroundTint="#4B76B8"
             app:elevation="0dp"/>
 
         <!-- 结束按钮 -->

@@ -7,12 +7,12 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
-    app:cardBackgroundColor="@android:color/white">
+    >
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+       >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -211,7 +211,7 @@
                     android:id="@+id/edit_task_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minLines="4"
+                    android:minLines="2"
                     android:gravity="top"
                     android:background="@android:color/transparent"
                     android:inputType="textMultiLine"
@@ -234,7 +234,7 @@
                     android:text="取消"
                     android:textColor="#757575"
                     android:background="@android:color/transparent"
-                    app:rippleColor="#EEEEEE"
+                    app:rippleColor="#5E9D88"
                     style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -246,7 +246,7 @@
                     android:paddingStart="24dp"
                     android:paddingEnd="24dp"
                     app:cornerRadius="24dp"
-                    app:backgroundTint="#5E97F6"/>
+                    app:backgroundTint="#477DD0"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

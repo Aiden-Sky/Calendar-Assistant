@@ -241,7 +241,7 @@ public class StatisticFragment extends Fragment {
         
         if (currentHabitChartType == HabitChartType.STREAK) {
             // 显示连续打卡天数
-            habitChartTypeButton.setText("连续打卡");
+            habitChartTypeButton.setText(getString(R.string.chart_streak));
             
             for (int i = 0; i < allHabits.size() && i < 7; i++) {
                 Habit_model habit = allHabits.get(i);
@@ -250,7 +250,7 @@ public class StatisticFragment extends Fragment {
             }
         } else {
             // 显示习惯完成率
-            habitChartTypeButton.setText("完成率");
+            habitChartTypeButton.setText(getString(R.string.chart_completion_rate));
             
             for (int i = 0; i < allHabits.size() && i < 7; i++) {
                 Habit_model habit = allHabits.get(i);
@@ -261,7 +261,7 @@ public class StatisticFragment extends Fragment {
         
         // 创建数据集
         BarDataSet dataSet = new BarDataSet(entries, currentHabitChartType == HabitChartType.STREAK ? 
-                "连续打卡天数" : "习惯完成率 (%)");
+                getString(R.string.chart_habit_streak_days) : getString(R.string.chart_habit_completion_rate));
         dataSet.setColor(Color.parseColor("#4CAF50"));
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(10f);
@@ -292,7 +292,7 @@ public class StatisticFragment extends Fragment {
         
         if (currentTaskChartType == TaskChartType.COMPLETION_RATE) {
             // 显示完成率
-            taskChartTypeButton.setText("完成率");
+            taskChartTypeButton.setText(getString(R.string.chart_completion_rate));
             
             // 计算每天的完成率
             for (int i = 0; i < dates.size(); i++) {
@@ -313,7 +313,7 @@ public class StatisticFragment extends Fragment {
             }
         } else {
             // 显示任务数量
-            taskChartTypeButton.setText("任务数");
+            taskChartTypeButton.setText(getString(R.string.chart_task_count));
             
             // 计算每天的任务数量
             for (int i = 0; i < dates.size(); i++) {
@@ -336,7 +336,7 @@ public class StatisticFragment extends Fragment {
         
         // 创建数据集
         LineDataSet dataSet = new LineDataSet(entries, currentTaskChartType == TaskChartType.COMPLETION_RATE ? 
-                "日程完成率 (%)" : "日程数量");
+                getString(R.string.chart_task_completion_rate) : getString(R.string.chart_task_count_title));
         dataSet.setColor(Color.parseColor("#2196F3"));
         dataSet.setCircleColor(Color.parseColor("#2196F3"));
         dataSet.setLineWidth(2f);
@@ -367,9 +367,9 @@ public class StatisticFragment extends Fragment {
         
         // 统计不同优先级的任务数量
         Map<String, Integer> priorityCounts = new HashMap<>();
-        priorityCounts.put("高", 0);
-        priorityCounts.put("中", 0);
-        priorityCounts.put("低", 0);
+        priorityCounts.put(getString(R.string.priority_high_value), 0);
+        priorityCounts.put(getString(R.string.priority_medium_value), 0);
+        priorityCounts.put(getString(R.string.priority_low_value), 0);
         
         for (Schedule schedule : schedules) {
             String priority = schedule.getPriority();
@@ -378,18 +378,21 @@ public class StatisticFragment extends Fragment {
         
         // 准备饼图数据
         ArrayList<PieEntry> entries = new ArrayList<>();
-        if (priorityCounts.get("高") > 0) {
-            entries.add(new PieEntry(priorityCounts.get("高"), "高优先级"));
+        if (priorityCounts.get(getString(R.string.priority_high_value)) > 0) {
+            entries.add(new PieEntry(priorityCounts.get(getString(R.string.priority_high_value)), 
+                getString(R.string.priority_high)));
         }
-        if (priorityCounts.get("中") > 0) {
-            entries.add(new PieEntry(priorityCounts.get("中"), "中优先级"));
+        if (priorityCounts.get(getString(R.string.priority_medium_value)) > 0) {
+            entries.add(new PieEntry(priorityCounts.get(getString(R.string.priority_medium_value)), 
+                getString(R.string.priority_medium)));
         }
-        if (priorityCounts.get("低") > 0) {
-            entries.add(new PieEntry(priorityCounts.get("低"), "低优先级"));
+        if (priorityCounts.get(getString(R.string.priority_low_value)) > 0) {
+            entries.add(new PieEntry(priorityCounts.get(getString(R.string.priority_low_value)), 
+                getString(R.string.priority_low)));
         }
         
         // 创建数据集
-        PieDataSet dataSet = new PieDataSet(entries, "任务优先级分布");
+        PieDataSet dataSet = new PieDataSet(entries, getString(R.string.priority_distribution_title));
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         dataSet.setValueTextColor(Color.WHITE);
         dataSet.setValueTextSize(12f);
@@ -402,7 +405,7 @@ public class StatisticFragment extends Fragment {
         priorityChart.setData(pieData);
         priorityChart.getDescription().setEnabled(false);
         priorityChart.setUsePercentValues(true);
-        priorityChart.setCenterText("优先级\n分布");
+        priorityChart.setCenterText(getString(R.string.chart_priority_center));
         priorityChart.setCenterTextSize(14f);
         priorityChart.setHoleRadius(45f);
         priorityChart.setTransparentCircleRadius(50f);
@@ -445,13 +448,13 @@ public class StatisticFragment extends Fragment {
         // 根据得分显示评价
         TextView evaluationText = (TextView) ((ViewGroup) productivityScoreView.getParent()).getChildAt(1);
         if (productivityScore >= 90) {
-            evaluationText.setText("优秀");
+            evaluationText.setText(getString(R.string.perfect));
         } else if (productivityScore >= 75) {
-            evaluationText.setText("良好");
+            evaluationText.setText(getString(R.string.good));
         } else if (productivityScore >= 60) {
-            evaluationText.setText("一般");
+            evaluationText.setText(getString(R.string.comman));
         } else {
-            evaluationText.setText("需努力");
+            evaluationText.setText(getString(R.string.stress));
         }
     }
     
@@ -515,7 +518,7 @@ public class StatisticFragment extends Fragment {
     private void showDateRangePicker() {
         MaterialDatePicker<androidx.core.util.Pair<Long, Long>> dateRangePicker =
                 MaterialDatePicker.Builder.dateRangePicker()
-                        .setTitleText("选择日期范围")
+                        .setTitleText(getString(R.string.date_range_picker_title))
                         .build();
         
         dateRangePicker.addOnPositiveButtonClickListener(selection -> {

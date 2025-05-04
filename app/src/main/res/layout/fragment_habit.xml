@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="今日完成\n0"
+                    android:text="@string/today_finish"
                     android:textAlignment="center"/>
 
                 <TextView
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="最长连续\n0天"
+                    android:text="@string/lonegest_f"
                     android:textAlignment="center"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginBottom="112dp"
+
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -84,14 +84,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="完成"/>
+                android:text="@string/finish"/>
 
             <Button
                 android:id="@+id/button_delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="删除"/>
+                android:text="@string/delete"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -101,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="180dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="80dp"
         android:src="@android:drawable/ic_input_add"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

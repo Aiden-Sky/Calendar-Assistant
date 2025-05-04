@@ -2,6 +2,223 @@
 <resources>
     <string name="app_name">习惯与日程助手</string>
     <string name="login_headline">登录界面</string>
+    <string name="schedule_main_addT">添加新任务</string>
+    <string name="forget_passwd">忘记密码</string>
+    
+    <!-- 日程界面字符串 -->
+    <string name="today_tasks">今日任务</string>
+    <string name="add_new_task">添加新任务</string>
+    
+    <!-- 任务项目字符串 -->
+    <string name="task_title_placeholder">任务标题</string>
+    <string name="priority_high">高优先级</string>
+    <string name="time_range_example">09:00 - 10:30</string>
+    <string name="category_work">工作</string>
+    
+    <!-- 添加任务界面字符串 -->
+    <string name="task_title">任务标题</string>
+    <string name="task_date">日期</string>
+    <string name="task_time">时间</string>
+    <string name="task_end_time">结束时间 (可选)</string>
+    <string name="task_repeat">重复周期</string>
+    <string name="task_reminder">提醒时间</string>
+    <string name="task_category">标签/分类</string>
+    <string name="task_priority">优先级</string>
+    <string name="task_description">备注/描述</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_save">保存</string>
+    
+    <!-- 日程列表界面字符串 -->
+    <string name="all_schedules">全部日程</string>
+    <string name="no_schedules">暂无日程</string>
+    <string name="add_schedule_hint">点击右下角加号创建新日程</string>
+    <string name="phone">电话</string>
+    <string name="email">邮箱</string>
+    <string name="save_regist">保存修改</string>
+    <string name="new_password_op">新密码（可选）</string>
+    <string name="user_name">用户名</string>
+    <string name="edit_infom_privice">编辑个人信息</string>
+    <string name="today_finish">今日完成\n0</string>
+    <string name="lonegest_f">最长连续\n0天</string>
+    <string name="finish">完成</string>
+    <string name="delete">删除</string>
+    <string name="dark_model">黑夜模式</string>
+    <string name="perisonInfom">修改个人信息</string>
+    <string name="language">语言</string>
+    <string name="confirom_pwd">确认新密码</string>
+    <string name="new_pwd">提交新密码</string>
+    <string name="exit">退出</string>
+    <string name="tomato_time">专注时钟</string>
+    <string name="start">开始</string>
+    <string name="rigist">注册</string>
+    <string name="confirm_old_pwd">确认密码</string>
+    <string name="passwd">密码</string>
+    <string name="user_regist">用户注册</string>
+    <string name="edit">编辑</string>
+    <string name="create_habit">创建习惯</string>
+    <string name="inputer_back">备注输入框</string>
+    <string name="back">备注</string>
+    <string name="alter_time">提醒时间</string>
+    <string name="pleaseInput_alter">提醒时间输入框</string>
+    <string name="inputer_fre">频率输入框</string>
+    <string name="fre_more">频率 (如：每天、每周三次)</string>
+    <string name="inputer_op">目标值输入框</string>
+    <string name="op_value">目标值</string>
+    <string name="new_habit">创建新习惯</string>
+    <string name="habit_name">习惯名称</string>
+    <string name="habit_inputer">习惯名称输入框</string>
+    <string name="unite_more">单位 (如：次、分钟、公里)</string>
+    <string name="unite_inputer">单位输入框</string>
+    
+    <!-- 统计界面字符串 -->
+    <string name="statistics_date_range">数据统计时段</string>
+    <string name="statistics_week">本周</string>
+    <string name="statistics_month">本月</string>
+    <string name="statistics_three_months">三个月</string>
+    <string name="statistics_year">本年</string>
+    <string name="statistics_custom">自定义</string>
+    
+    <string name="efficiency_score">效率评分</string>
+    <string name="score_excellent">优秀</string>
+    <string name="score_good">良好</string>
+    <string name="score_average">一般</string>
+    <string name="score_needs_improvement">需努力</string>
+    
+    <string name="overview_habit_rate">习惯完成率</string>
+    <string name="overview_task_rate">日程完成率</string>
+    <string name="overview_habit_count">习惯总数</string>
+    <string name="overview_task_count">日程总数</string>
+    <string name="percent_format">%d%%</string>
+    <string name="number_zero">0</string>
+    
+    <string name="habit_statistics">习惯打卡统计</string>
+    <string name="habit_streak">连续打卡</string>
+    <string name="task_statistics">日程完成统计</string>
+    <string name="completion_rate">完成率</string>
+    <string name="priority_distribution">任务优先级分布</string>
 
+    <!-- 优先级相关字符串 -->
+    <string name="priority_medium">中优先级</string>
+    <string name="priority_low">低优先级</string>
+    <string name="priority_distribution_title">任务优先级分布</string>
+    <string name="priority_high_value">高</string>
+    <string name="priority_medium_value">中</string>
+    <string name="priority_low_value">低</string>
+
+    <!-- 习惯创建验证提示 -->
+    <string name="error_required_fields">请填写所有必填字段</string>
+    <string name="error_goal_positive">目标值必须为正数</string>
+    <string name="error_goal_numeric">目标值必须为数字</string>
+    <string name="habit_save_success">习惯保存成功</string>
+    <string name="habit_save_failed">保存失败</string>
+    <string name="habit_save_failed_with_error">保存失败: %1$s</string>
+    <string name="debug_habit_name_found">habitName: %1$s</string>
+
+    <!-- 编辑个人信息界面提示信息 -->
+    <string name="error_not_logged_in">未登录用户，请重新登录</string>
+    <string name="error_load_user_info">无法加载用户信息</string>
+    <string name="success_profile_update">个人信息更新成功</string>
+    <string name="error_profile_update">更新失败，可能用户名或电话已被使用</string>
+    <string name="error_username_empty">用户名不能为空</string>
+    <string name="error_phone_empty">电话不能为空</string>
+    <string name="error_email_empty">邮箱不能为空</string>
+    <string name="error_invalid_phone">请输入有效的电话号码</string>
+    <string name="error_invalid_email">请输入有效的邮箱地址</string>
+    <string name="error_password_mismatch">两次输入的密码不一致</string>
+    <string name="error_password_length">密码长度需至少6位</string>
+
+    <!-- 登录注册相关提示信息 -->
+    <string name="error_login_failed">登录失败，用户名或密码错误</string>
+    <string name="error_register_failed">注册失败，用户名已存在</string>
+    <string name="success_register">注册成功</string>
+    <string name="error_network">网络连接失败，请稍后重试</string>
+    <string name="error_server">服务器错误，请稍后重试</string>
+    <string name="error_unknown">发生未知错误，请稍后重试</string>
+    <string name="error_username_exists">用户名已存在</string>
+    <string name="error_invalid_username">用户名只能包含字母、数字和下划线</string>
+    <string name="error_field_required">此字段为必填项</string>
+    <string name="loading">正在加载...</string>
+    <string name="login_success">登录成功</string>
+    <string name="logout_success">已退出登录</string>
+
+    <!-- 功能操作相关字符串 -->
+    <string name="action_edit">编辑</string>
+    <string name="action_delete">删除</string>
+    <string name="action_share">分享</string>
+    <string name="action_confirm">确认</string>
+    <string name="action_cancel">取消</string>
+    <string name="dialog_confirm_delete">确认要删除吗？</string>
+    <string name="operation_success">操作成功</string>
+    <string name="operation_failed">操作失败</string>
+    
+    <!-- 设置相关字符串 -->
+    <string name="settings">设置</string>
+    <string name="settings_notification">通知设置</string>
+    <string name="settings_sound">声音设置</string>
+    <string name="settings_theme">主题设置</string>
+    <string name="settings_about">关于</string>
+    
+    <!-- 通用提示信息 -->
+    <string name="sync_in_progress">正在同步...</string>
+    <string name="sync_complete">同步完成</string>
+    <string name="sync_failed">同步失败</string>
+    <string name="no_network">无网络连接</string>
+    <string name="please_wait">请稍候...</string>
+    <string name="auto_login_success">自动登录成功</string>
+
+    <!-- 图表相关字符串 -->
+    <string name="chart_streak">连续打卡</string>
+    <string name="chart_completion_rate">完成率</string>
+    <string name="chart_task_count">任务数</string>
+    <string name="chart_habit_streak_days">连续打卡天数</string>
+    <string name="chart_habit_completion_rate">习惯完成率 (%)</string>
+    <string name="chart_task_completion_rate">日程完成率 (%)</string>
+    <string name="chart_task_count_title">日程数量</string>
+    <string name="chart_priority_center">优先级\n分布</string>
+    <string name="date_range_picker_title">选择日期范围</string>
+
+    <!-- 数据库操作相关字符串 -->
+    <string name="db_error_create">创建数据库失败</string>
+    <string name="db_error_update">更新数据库失败</string>
+    <string name="db_error_delete">删除记录失败</string>
+    <string name="db_error_query">查询数据失败</string>
+    <string name="db_success_create">数据创建成功</string>
+    <string name="db_success_update">数据更新成功</string>
+    <string name="db_success_delete">删除成功</string>
+    <string name="db_error_connection">数据库连接失败</string>
+    <string name="db_error_transaction">事务处理失败</string>
+    
+    <!-- 时间相关字符串 -->
+    <string name="date_format">yyyy年MM月dd日</string>
+    <string name="time_format">HH:mm</string>
+    <string name="datetime_format">yyyy年MM月dd日 HH:mm</string>
+    <string name="date_today">今天</string>
+    <string name="date_tomorrow">明天</string>
+    <string name="date_yesterday">昨天</string>
+    <string name="time_morning">上午</string>
+    <string name="time_afternoon">下午</string>
+    <string name="time_evening">晚上</string>
+    <string name="time_period_format">%1$s%2$s</string>
+    
+    <!-- 状态描述字符串 -->
+    <string name="status_completed">已完成</string>
+    <string name="status_in_progress">进行中</string>
+    <string name="status_not_started">未开始</string>
+    <string name="status_overdue">已过期</string>
+    <string name="status_paused">已暂停</string>
+    <string name="status_canceled">已取消</string>
+
+
+    <string name="perfect">优秀</string>
+    <string name="good">良好</string>
+    <string name="comman">一般</string>
+    <string name="stress">需努力</string>
+
+
+    <string name="habit_card">习惯打卡</string>
+    <string name="daily_common">日程管理</string>
+    <string name="tomato">番茄时钟</string>
+    <string name="statistic">数据统计</string>
+    <string name="personalcent">个人中心</string>
 
 </resources>

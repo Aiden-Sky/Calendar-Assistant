@@ -58,12 +58,13 @@ public class PersonalFragment extends Fragment {
         setupNightMode(view);
         Spinner languageSpinner = view.findViewById(R.id.language_spinner);
         Button editProfileButton = view.findViewById(R.id.edit_profile_button);
+        Button logoutButton = view.findViewById(R.id.logout_button);
 
         // 设置头像点击事件
         avatarImageView.setOnClickListener(v -> pickImage());
 
         // 检查控件初始化
-        if (avatarImageView == null || languageSpinner == null || editProfileButton == null) {
+        if (avatarImageView == null || languageSpinner == null || editProfileButton == null || logoutButton == null) {
             Log.e(TAG, "控件初始化失败");
             Toast.makeText(getContext(), "页面加载失败", Toast.LENGTH_SHORT).show();
             return view;
@@ -119,6 +120,9 @@ public class PersonalFragment extends Fragment {
             Log.d(TAG, "点击修改个人信息");
             startActivity(new Intent(getActivity(), Edit_profile_activity.class));
         });
+
+        // 设置退出登录按钮点击事件
+        logoutButton.setOnClickListener(v -> logout());
 
         Log.d(TAG, "onCreateView 结束");
         return view;
@@ -296,6 +300,27 @@ public class PersonalFragment extends Fragment {
         }
         inputStream.close();
         outputStream.close();
+    }
+
+    private void logout() {
+        Log.d(TAG, "开始退出登录");
+        // 清除用户相关的SharedPreferences
+        getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                .edit()
+                .remove("username")
+                .remove("password")
+                .remove("remember_password")
+                .remove("auto_login")
+                .apply();
+
+        // 显示退出成功提示
+        Toast.makeText(getContext(), "退出登录成功", Toast.LENGTH_SHORT).show();
+
+        // 跳转到登录页面
+        Intent intent = new Intent(getActivity(), Login_activity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

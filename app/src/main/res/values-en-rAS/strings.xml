@@ -1,5 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">habit</string>
-    <string name="login_headline">login</string>
+    <string name="app_name">Habit Assistant</string>
+    <string name="login_headline">Login</string>
+    <string name="schedule_main_addT">Add New Task</string>
+    <string name="forget_passwd">Forgot Password</string>
+    
+    <!-- Schedule interface strings -->
+    <string name="today_tasks">Today\'s Tasks</string>
+    <string name="add_new_task">Add New Task</string>
+    
+    <!-- Task item strings -->
+    <string name="task_title_placeholder">Task Title</string>
+
+    <string name="time_range_example">09:00 - 10:30</string>
+    <string name="category_work">Work</string>
+    
+    <!-- Add task interface strings -->
+    <string name="task_title">Task Title</string>
+    <string name="task_date">Date</string>
+    <string name="task_time">Time</string>
+    <string name="task_end_time">End Time (Optional)</string>
+    <string name="task_repeat">Repeat Cycle</string>
+    <string name="task_reminder">Reminder Time</string>
+    <string name="task_category">Tag/Category</string>
+    <string name="task_priority">Priority</string>
+    <string name="task_description">Notes/Description</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_save">Save</string>
+    
+    <!-- Schedule list interface strings -->
+    <string name="all_schedules">All Schedules</string>
+    <string name="no_schedules">No Schedules</string>
+    <string name="add_schedule_hint">Click the plus button in the bottom right corner to create a new schedule</string>
+
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="save_regist">Save Changes</string>
+    <string name="new_password_op">New Password (Optional)</string>
+    <string name="user_name">Username</string>
+    <string name="edit_infom_privice">Edit Profile</string>
+    <string name="today_finish">Today Complete\n0</string>
+    <string name="lonegest_f">Longest Streak\n0 days</string>
+    <string name="finish">Complete</string>
+    <string name="delete">Delete</string>
+    <string name="dark_model">Dark Mode</string>
+    <string name="perisonInfom">Edit Profile</string>
+    <string name="language">Language</string>
+    <string name="confirom_pwd">Confirm New Password</string>
+    <string name="new_pwd">Submit New Password</string>
+    <string name="exit">Exit</string>
+    <string name="tomato_time">Focus Timer</string>
+    <string name="start">Start</string>
+    <string name="rigist">Register</string>
+    <string name="confirm_old_pwd">Confirm Password</string>
+    <string name="passwd">Password</string>
+    <string name="user_regist">User Registration</string>
+    <string name="edit">Edit</string>
+    <string name="create_habit">Create Habit</string>
+    <string name="inputer_back">Notes Input Box</string>
+    <string name="back">Notes</string>
+    <string name="alter_time">Reminder Time</string>
+    <string name="pleaseInput_alter">Reminder Time Input Box</string>
+    <string name="inputer_fre">Frequency Input Box</string>
+    <string name="fre_more">Frequency (e.g. Daily, Three times per week)</string>
+    <string name="inputer_op">Target Value Input Box</string>
+    <string name="op_value">Target Value</string>
+    <string name="new_habit">Create New Habit</string>
+    <string name="habit_name">Habit Name</string>
+    <string name="habit_inputer">Habit Name Input Box</string>
+    <string name="unite_more">Unit (e.g. times, minutes, kilometers)</string>
+    <string name="unite_inputer">Unit Input Box</string>
+
+    <!-- Statistics interface strings -->
+    <string name="statistics_date_range">Statistics Period</string>
+    <string name="statistics_week">This Week</string>
+    <string name="statistics_month">This Month</string>
+    <string name="statistics_three_months">Three Months</string>
+    <string name="statistics_year">This Year</string>
+    <string name="statistics_custom">Custom</string>
+    
+    <string name="efficiency_score">Efficiency Score</string>
+    <string name="score_excellent">Excellent</string>
+    <string name="score_good">Good</string>
+    <string name="score_average">Average</string>
+    <string name="score_needs_improvement">Needs Improvement</string>
+    
+    <string name="overview_habit_rate">Habit Completion Rate</string>
+    <string name="overview_task_rate">Task Completion Rate</string>
+    <string name="overview_habit_count">Total Habits</string>
+    <string name="overview_task_count">Total Tasks</string>
+    <string name="percent_format">%d%%</string>
+    <string name="number_zero">0</string>
+    
+    <string name="habit_statistics">Habit Check-in Statistics</string>
+    <string name="habit_streak">Check-in Streak</string>
+    <string name="task_statistics">Task Completion Statistics</string>
+    <string name="completion_rate">Completion Rate</string>
+    <string name="priority_distribution">Task Priority Distribution</string>
+    <string name="priority_high">High Priority</string>
+    <string name="priority_medium">Medium Priority</string>
+    <string name="priority_low">Low Priority</string>
+    <string name="priority_distribution_title">Task Priority Distribution</string>
+
+    <string name="priority_medium_value">Medium</string>
+    <string name="priority_low_value">Low</string>
+
+    <!-- Habit creation validation prompts -->
+    <string name="error_required_fields">Please fill in all required fields</string>
+    <string name="error_goal_positive">Target value must be positive</string>
+    <string name="error_goal_numeric">Target value must be numeric</string>
+    <string name="habit_save_success">Habit saved successfully</string>
+    <string name="habit_save_failed">Save failed</string>
+    <string name="habit_save_failed_with_error">Save failed: %1$s</string>
+    <string name="debug_habit_name_found">habitName: %1$s</string>
+
+    <!-- Edit profile interface prompts -->
+    <string name="error_not_logged_in">Not logged in, please login again</string>
+    <string name="error_load_user_info">Unable to load user information</string>
+    <string name="success_profile_update">Profile updated successfully</string>
+    <string name="error_profile_update">Update failed, username or phone may be in use</string>
+    <string name="error_username_empty">Username cannot be empty</string>
+    <string name="error_phone_empty">Phone number cannot be empty</string>
+    <string name="error_email_empty">Email cannot be empty</string>
+    <string name="error_invalid_phone">Please enter a valid phone number</string>
+    <string name="error_invalid_email">Please enter a valid email address</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_password_length">Password must be at least 6 characters</string>
+
+    <!-- Login registration related prompts -->
+    <string name="error_login_failed">Login failed, incorrect username or password</string>
+    <string name="error_register_failed">Registration failed, username already exists</string>
+    <string name="success_register">Registration successful</string>
+    <string name="error_network">Network connection failed, please try again later</string>
+    <string name="error_server">Server error, please try again later</string>
+    <string name="error_unknown">An unknown error occurred, please try again later</string>
+    <string name="error_username_exists">Username already exists</string>
+    <string name="error_invalid_username">Username can only contain letters, numbers and underscores</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="loading">Loading...</string>
+    <string name="login_success">Login successful</string>
+    <string name="logout_success">Logged out successfully</string>
+
+    <!-- Function operation related strings -->
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_share">Share</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="dialog_confirm_delete">Are you sure you want to delete?</string>
+    <string name="operation_success">Operation successful</string>
+    <string name="operation_failed">Operation failed</string>
+    
+    <!-- Settings related strings -->
+    <string name="settings">Settings</string>
+    <string name="settings_notification">Notification Settings</string>
+    <string name="settings_sound">Sound Settings</string>
+    <string name="settings_theme">Theme Settings</string>
+    <string name="settings_about">About</string>
+    
+    <!-- General prompts -->
+    <string name="sync_in_progress">Syncing...</string>
+    <string name="sync_complete">Sync complete</string>
+    <string name="sync_failed">Sync failed</string>
+    <string name="no_network">No network connection</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="auto_login_success">Auto login successful</string>
+
+    <!-- Database operation related strings -->
+    <string name="db_error_create">Failed to create database</string>
+    <string name="db_error_update">Failed to update database</string>
+    <string name="db_error_delete">Failed to delete record</string>
+    <string name="db_error_query">Failed to query data</string>
+    <string name="db_success_create">Data created successfully</string>
+    <string name="db_success_update">Data updated successfully</string>
+    <string name="db_success_delete">Deleted successfully</string>
+    <string name="db_error_connection">Database connection failed</string>
+    <string name="db_error_transaction">Transaction processing failed</string>
+    
+    <!-- Time related strings -->
+    <string name="date_format">MM/dd/yyyy</string>
+    <string name="time_format">HH:mm</string>
+    <string name="datetime_format">MM/dd/yyyy HH:mm</string>
+    <string name="date_today">Today</string>
+    <string name="date_tomorrow">Tomorrow</string>
+    <string name="date_yesterday">Yesterday</string>
+    <string name="time_morning">AM</string>
+    <string name="time_afternoon">PM</string>
+    <string name="time_evening">Evening</string>
+    <string name="time_period_format">%1$s%2$s</string>
+    
+    <!-- Status description strings -->
+    <string name="status_completed">Completed</string>
+    <string name="status_in_progress">In Progress</string>
+    <string name="status_not_started">Not Started</string>
+    <string name="status_overdue">Overdue</string>
+    <string name="status_paused">Paused</string>
+    <string name="status_canceled">Canceled</string>
+    
+    <!-- Chart related strings -->
+    <string name="chart_streak">Check-in Streak</string>
+    <string name="chart_completion_rate">Completion Rate</string>
+    <string name="chart_task_count">Task Count</string>
+    <string name="chart_habit_streak_days">Consecutive Check-in Days</string>
+    <string name="chart_habit_completion_rate">Habit Completion Rate (%)</string>
+    <string name="chart_task_completion_rate">Task Completion Rate (%)</string>
+    <string name="chart_task_count_title">Task Count</string>
+    <string name="chart_priority_center">Priority\nDistribution</string>
+    <string name="date_range_picker_title">Select Date Range</string>
+
+    <string name="perfect">Excellent</string>
+    <string name="good">Good</string>
+    <string name="comman">Average</string>
+    <string name="stress">Needs Improvement</string>
+
+    <string name="habit_card">Habit Tracker</string>
+    <string name="daily_common">Schedule</string>
+    <string name="tomato">Pomodoro Timer</string>
+    <string name="statistic">Statistics</string>
+    <string name="personalcent">Profile</string> <!-- 或 Personal Center -->
+
+
 </resources>

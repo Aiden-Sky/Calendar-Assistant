@@ -30,7 +30,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="数据统计时段"
+                    android:text="@string/statistics_date_range"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
@@ -51,7 +51,7 @@
                             android:id="@+id/chip_week"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="本周"
+                            android:text="@string/statistics_week"
                             android:checked="true"
                             style="@style/Widget.MaterialComponents.Chip.Choice"/>
 
@@ -59,28 +59,28 @@
                             android:id="@+id/chip_month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="本月"
+                            android:text="@string/statistics_month"
                             style="@style/Widget.MaterialComponents.Chip.Choice"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_three_months"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="三个月"
+                            android:text="@string/statistics_three_months"
                             style="@style/Widget.MaterialComponents.Chip.Choice"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_year"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="本年"
+                            android:text="@string/statistics_year"
                             style="@style/Widget.MaterialComponents.Chip.Choice"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_custom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="自定义"
+                            android:text="@string/statistics_custom"
                             style="@style/Widget.MaterialComponents.Chip.Choice"/>
                     </com.google.android.material.chip.ChipGroup>
                 </HorizontalScrollView>
@@ -106,7 +106,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="效率评分"
+                    android:text="@string/efficiency_score"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
@@ -146,7 +146,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="良好"
+                            android:text="@string/score_good"
                             android:textSize="14sp"/>
                     </LinearLayout>
                 </FrameLayout>
@@ -184,7 +184,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="习惯完成率"
+                            android:text="@string/overview_habit_rate"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -193,7 +193,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="24sp"
                             android:textColor="@color/primary"
-                            android:text="0%"/>
+                            android:text="@string/number_zero"/>
                     </LinearLayout>
 
                     <View
@@ -211,7 +211,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="日程完成率"
+                            android:text="@string/overview_task_rate"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -220,7 +220,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="24sp"
                             android:textColor="@color/primary"
-                            android:text="0%"/>
+                            android:text="@string/number_zero"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -245,7 +245,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="习惯总数"
+                            android:text="@string/overview_habit_count"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -253,7 +253,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="24sp"
-                            android:text="0"/>
+                            android:text="@string/number_zero"/>
                     </LinearLayout>
 
                     <View
@@ -271,7 +271,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="日程总数"
+                            android:text="@string/overview_task_count"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -279,7 +279,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="24sp"
-                            android:text="0"/>
+                            android:text="@string/number_zero"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -311,7 +311,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="习惯打卡统计"
+                        android:text="@string/habit_statistics"
                         android:textStyle="bold"
                         android:textSize="16sp"/>
 
@@ -319,7 +319,7 @@
                         android:id="@+id/habit_chart_type_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="连续打卡"
+                        android:text="@string/habit_streak"
                         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                         android:textSize="12sp"
                         app:icon="@android:drawable/arrow_down_float"/>
@@ -359,7 +359,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="日程完成统计"
+                        android:text="@string/task_statistics"
                         android:textStyle="bold"
                         android:textSize="16sp"/>
 
@@ -367,7 +367,7 @@
                         android:id="@+id/task_chart_type_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="完成率"
+                        android:text="@string/completion_rate"
                         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                         android:textSize="12sp"
                         app:icon="@android:drawable/arrow_down_float"/>
@@ -402,7 +402,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="任务优先级分布"
+                    android:text="@string/priority_distribution"
                     android:textStyle="bold"
                     android:textSize="16sp"/>
 

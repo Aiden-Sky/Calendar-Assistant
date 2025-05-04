@@ -39,7 +39,8 @@ public class add_habit_activity extends AppCompatActivity {
         habitReminderTimeLayout = findViewById(R.id.habit_reminder_time_layout);
 
         // 验证控件是否正确加载
-        Log.d("add_habit_activity", "habitName: " + (habitName != null ? "found" : "null"));
+        Log.d("add_habit_activity", getString(R.string.debug_habit_name_found, 
+              habitName != null ? "found" : "null"));
 
         // 设置末尾图标点击事件以选择时间
         habitReminderTimeLayout.setEndIconOnClickListener(v -> showTimePickerDialog());
@@ -72,14 +73,14 @@ public class add_habit_activity extends AppCompatActivity {
         String notes = habitNotes.getText().toString().trim();
 
         if (name.isEmpty() || unit.isEmpty() || goalValueStr.isEmpty() || frequency.isEmpty() || reminderTime.isEmpty()) {
-            Toast.makeText(this, "请填写所有必填字段", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_required_fields, Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
             int goalValue = Integer.parseInt(goalValueStr);
             if (goalValue <= 0) {
-                Toast.makeText(this, "目标值必须为正数", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_goal_positive, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -87,17 +88,18 @@ public class add_habit_activity extends AppCompatActivity {
                     notes, 0, 0.0, false);
             long id = habitDao.insertHabit(newHabit);
             if (id != -1) {
-                Toast.makeText(this, "习惯保存成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.habit_save_success, Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 finish();
             } else {
-                Toast.makeText(this, "保存失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.habit_save_failed, Toast.LENGTH_SHORT).show();
             }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "目标值必须为数字", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_goal_numeric, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Log.e("add_habit_activity", "保存失败: " + e.getMessage());
-            Toast.makeText(this, "保存失败: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("add_habit_activity", getString(R.string.habit_save_failed_with_error, e.getMessage()));
+            Toast.makeText(this, getString(R.string.habit_save_failed_with_error, e.getMessage()), 
+                         Toast.LENGTH_LONG).show();
         }
     }
 }

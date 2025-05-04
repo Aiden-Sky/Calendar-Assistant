@@ -37,7 +37,7 @@
                     android:textSize="16sp"
                     android:textColor="#333333"
                     android:textStyle="bold"
-                    android:text="任务标题"
+                    android:text="@string/task_title_placeholder"
                     android:maxLines="1"
                     android:ellipsize="end"/>
 
@@ -51,7 +51,7 @@
                     android:textSize="12sp"
                     android:textColor="@android:color/white"
                     android:background="@android:color/holo_red_light"
-                    android:text="高"
+                    android:text="@string/priority_high"
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="#666666"
-                android:text="09:00 - 10:30"
+                android:text="@string/time_range_example"
                 android:layout_marginTop="4dp"/>
 
             <!-- 分类标签 -->
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="#5E97F6"
-                android:text="工作"
+                android:text="@string/category_work"
                 android:layout_marginTop="4dp"/>
         </LinearLayout>
 

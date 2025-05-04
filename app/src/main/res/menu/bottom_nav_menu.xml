@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_habit"
-        android:title="习惯打卡"
+        android:title="@string/habit_card"
         android:icon="@drawable/ic_menu_mark"/>
     <item
         android:id="@+id/nav_schedule"
-        android:title="日程管理"
+        android:title="@string/daily_common"
         android:icon="@drawable/ic_menu_calende"/>
     <item
         android:id="@+id/nav_tomato"
-        android:title="番茄时钟"
+        android:title="@string/tomato"
         android:icon="@drawable/ic_menu_tomato"/>
     <item
         android:id="@+id/nav_statistic"
-        android:title="数据统计"
+        android:title="@string/statistic"
         android:icon="@drawable/ic_menu_statistics"/>
     <item
         android:id="@+id/nav_mine"
-        android:title="个人中心"
+        android:title="@string/personalcent"
         android:icon="@drawable/ic_menue_personal"/>
 </menu>

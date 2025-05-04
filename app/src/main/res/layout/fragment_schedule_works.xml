@@ -27,7 +27,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="全部日程"
+                android:text="@string/all_schedules"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#333333"/>
@@ -74,7 +74,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="暂无日程"
+            android:text="@string/no_schedules"
             android:textSize="18sp"
             android:gravity="center"
             android:layout_marginTop="16dp"
@@ -83,7 +83,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="点击右下角加号创建新日程"
+            android:text="@string/add_schedule_hint"
             android:textSize="14sp"
             android:gravity="center"
             android:layout_marginTop="8dp"
@@ -95,9 +95,8 @@
         android:id="@+id/fab_add_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="100dp"
-
+        android:layout_margin="20dp"
+        android:contentDescription="@string/add_new_task"
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="#4B76B8"
         app:tint="@android:color/white"

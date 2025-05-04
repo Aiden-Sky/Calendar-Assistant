@@ -10,7 +10,7 @@
         android:id="@+id/header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="创建新习惯"
+        android:text="@string/new_habit"
         android:textColor="#4CAF50"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -55,12 +55,12 @@
                     android:id="@+id/habit_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="习惯名称"
+                    android:hint="@string/habit_name"
                     android:inputType="text"
                     android:padding="16dp"
                     android:textColor="#212121"
                     android:textSize="16sp"
-                    android:contentDescription="习惯名称输入框" />
+                    android:contentDescription="@string/habit_inputer" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -77,12 +77,12 @@
                     android:id="@+id/habit_unit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="单位 (如：次、分钟、公里)"
+                    android:hint="@string/unite_more"
                     android:inputType="text"
                     android:padding="16dp"
                     android:textColor="#212121"
                     android:textSize="16sp"
-                    android:contentDescription="单位输入框" />
+                    android:contentDescription="@string/unite_inputer" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -99,12 +99,12 @@
                     android:id="@+id/habit_goal_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="目标值"
+                    android:hint="@string/op_value"
                     android:inputType="numberDecimal"
                     android:padding="16dp"
                     android:textColor="#212121"
                     android:textSize="16sp"
-                    android:contentDescription="目标值输入框" />
+                    android:contentDescription="@string/inputer_op" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -121,12 +121,12 @@
                     android:id="@+id/habit_frequency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="频率 (如：每天、每周三次)"
+                    android:hint="@string/fre_more"
                     android:inputType="text"
                     android:padding="16dp"
                     android:textColor="#212121"
                     android:textSize="16sp"
-                    android:contentDescription="频率输入框" />
+                    android:contentDescription="@string/inputer_fre" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -145,12 +145,12 @@
                     android:id="@+id/habit_reminder_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="提醒时间"
+                    android:hint="@string/alter_time"
                     android:focusable="false"
                     android:padding="16dp"
                     android:textColor="#212121"
                     android:textSize="16sp"
-                    android:contentDescription="提醒时间输入框" />
+                    android:contentDescription="@string/pleaseInput_alter" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -167,14 +167,14 @@
                     android:id="@+id/habit_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="备注"
+                    android:hint="@string/back"
                     android:inputType="textMultiLine"
                     android:lines="3"
                     android:padding="16dp"
                     android:gravity="top"
                     android:textColor="#212121"
                     android:textSize="16sp"
-                    android:contentDescription="备注输入框" />
+                    android:contentDescription="@string/inputer_back" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </ScrollView>
@@ -184,7 +184,7 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:backgroundTint="#4CAF50"
-        android:text="创建习惯"
+        android:text="@string/create_habit"
         android:textAllCaps="false"
         android:textSize="16sp"
         android:textStyle="bold"

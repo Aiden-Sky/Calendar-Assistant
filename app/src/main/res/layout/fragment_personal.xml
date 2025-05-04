@@ -72,7 +72,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="16dp"
-                            android:text="黑夜模式"
+                            android:text="@string/dark_model"
                             android:textSize="16sp"/>
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
@@ -104,7 +104,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="语言"
+                            android:text="@string/language"
                             android:textSize="16sp"/>
 
                         <Spinner
@@ -127,8 +127,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="修改个人信息"
+                        android:text="@string/perisonInfom"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                    <!-- 退出登录按钮 -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/logout_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="退出登录"
+                        style="@style/Widget.MaterialComponents.Button"/>
 
                 </LinearLayout>
 

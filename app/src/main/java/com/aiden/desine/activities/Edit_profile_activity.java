@@ -42,7 +42,7 @@ public class Edit_profile_activity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         currentUsername = prefs.getString("username", null);
         if (currentUsername == null) {
-            Toast.makeText(this, "未登录用户，请重新登录", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_not_logged_in), Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -64,7 +64,7 @@ public class Edit_profile_activity extends AppCompatActivity {
             // 不预填密码，保持为空
             Log.d(TAG, "用户信息加载成功: " + user.getUsername());
         } else {
-            Toast.makeText(this, "无法加载用户信息", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_load_user_info), Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -94,10 +94,10 @@ public class Edit_profile_activity extends AppCompatActivity {
         // 更新数据库
         boolean success = userDao.updateUser(currentUsername, updatedUser);
         if (success) {
-            Toast.makeText(this, "个人信息更新成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.success_profile_update), Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            Toast.makeText(this, "更新失败，可能用户名或电话已被使用", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_profile_update), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "用户信息更新失败");
         }
     }
@@ -106,31 +106,31 @@ public class Edit_profile_activity extends AppCompatActivity {
     private boolean validateInputs(String username, String phone, String email, String password, String confirmPassword) {
         // 检查是否为空
         if (username.isEmpty()) {
-            Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_username_empty), Toast.LENGTH_SHORT).show();
             editTextUsername.requestFocus();
             return false;
         }
         if (phone.isEmpty()) {
-            Toast.makeText(this, "电话不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_phone_empty), Toast.LENGTH_SHORT).show();
             editTextPhone.requestFocus();
             return false;
         }
         if (email.isEmpty()) {
-            Toast.makeText(this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_email_empty), Toast.LENGTH_SHORT).show();
             editTextEmail.requestFocus();
             return false;
         }
 
         // 电话格式验证
         if (!Patterns.PHONE.matcher(phone).matches()) {
-            Toast.makeText(this, "请输入有效的电话号码", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_invalid_phone), Toast.LENGTH_SHORT).show();
             editTextPhone.requestFocus();
             return false;
         }
 
         // 邮箱格式验证
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "请输入有效的邮箱地址", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_invalid_email), Toast.LENGTH_SHORT).show();
             editTextEmail.requestFocus();
             return false;
         }
@@ -138,12 +138,12 @@ public class Edit_profile_activity extends AppCompatActivity {
         // 密码一致性验证
         if (!password.isEmpty() || !confirmPassword.isEmpty()) {
             if (!password.equals(confirmPassword)) {
-                Toast.makeText(this, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_password_mismatch), Toast.LENGTH_SHORT).show();
                 editTextConfirmPassword.requestFocus();
                 return false;
             }
             if (password.length() < 6) {
-                Toast.makeText(this, "密码长度需至少6位", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_password_length), Toast.LENGTH_SHORT).show();
                 editTextPassword.requestFocus();
                 return false;
             }

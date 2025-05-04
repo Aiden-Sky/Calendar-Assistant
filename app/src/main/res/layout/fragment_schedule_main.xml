@@ -31,7 +31,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- 今日任务列表 -->
+            <!-- 今日任务列表卡片 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,11 +55,15 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="12dp"/>
 
+                    <!-- 使用固定高度的RecyclerView -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/habit_list"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="80dp"
+                        android:layout_height="400dp"
+                        android:scrollbars="vertical"
+                        android:fadeScrollbars="false"
+                        android:clipToPadding="false"
+                        android:nestedScrollingEnabled="true"
                         tools:listitem="@layout/item_schedule"
                         tools:itemCount="3"/>
 

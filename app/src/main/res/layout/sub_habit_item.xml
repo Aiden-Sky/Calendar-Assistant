@@ -59,7 +59,8 @@
                     android:inputType="text"
                     android:padding="16dp"
                     android:textColor="#212121"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:contentDescription="习惯名称输入框" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -80,7 +81,8 @@
                     android:inputType="text"
                     android:padding="16dp"
                     android:textColor="#212121"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:contentDescription="单位输入框" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -98,10 +100,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="目标值"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:padding="16dp"
                     android:textColor="#212121"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:contentDescription="目标值输入框" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -122,7 +125,8 @@
                     android:inputType="text"
                     android:padding="16dp"
                     android:textColor="#212121"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:contentDescription="频率输入框" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -133,17 +137,20 @@
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#4CAF50"
                 app:hintTextColor="#4CAF50"
-                app:startIconTint="#4CAF50">
+                app:startIconTint="#4CAF50"
+                app:endIconMode="custom"
+                app:endIconDrawable="@android:drawable/ic_menu_recent_history">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/habit_reminder_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="提醒时间 (如：早上8点、晚上9:30)"
-                    android:inputType="text"
+                    android:hint="提醒时间"
+                    android:focusable="false"
                     android:padding="16dp"
                     android:textColor="#212121"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:contentDescription="提醒时间输入框" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -166,7 +173,8 @@
                     android:padding="16dp"
                     android:gravity="top"
                     android:textColor="#212121"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:contentDescription="备注输入框" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </ScrollView>
